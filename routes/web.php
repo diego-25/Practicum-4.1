@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EntidadController;
+use App\Http\Controllers\InstitucionController;
 
 Route::get('/', function () {
     return view('inicio');
@@ -13,4 +13,4 @@ Route::get('/home', function () {
 });
 
 // Ruta para el modulo entidades
-Route::resource('entidades', EntidadController::class);
+Route::resource('instituciones', InstitucionController::class);

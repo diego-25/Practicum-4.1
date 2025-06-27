@@ -8,6 +8,6 @@
         Selecione la opción del menú para comenzar: 
     </p>
     <ul class="list-disc ml-6 text-blue-700">
-        <li><a href="{{route('entidades.index')}}">Entidades</a></li>
+        <li><a href="{{route('instituciones.index')}}">Instituciones</a></li>
     </ul>
 @endsection

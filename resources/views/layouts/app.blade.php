@@ -59,7 +59,7 @@
         {{-- Barras de Navegacion --}}
         <nav>
             <a href="{{ url('/')}}">Inicio</a>
-            <a href="{{ route('entidades.index')}}">Entidades</a>
+            <a href="{{ route('instituciones.index')}}">Entidades</a>
         </nav>
         {{-- Contenido Principal --}}
         <main>
