@@ -13,7 +13,7 @@ class EntidadController extends Controller
     public function index()
     {
         $entidades=Entidad::all();
-        return view('entidades.intex', compact('entidades'));
+        return view('entidades.index', compact('entidades'));
     }
 
     /**
@@ -30,16 +30,17 @@ class EntidadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'codigo'=>'required|integer|unique:entidades,codigo',
-            'subsector'=>'required|string',
-            'nivelGobierno'=>'required|string',
-            'estado'=>'required|string',
-            'fechaCreacion'=>'required|date',
-            'fechaActualizacion'=>'nullable|date',
+            'codigo'=> 'required|integer|unique:entidades,codigo',
+            'subSector'=> 'required|string',
+            'nivelGobierno'=> 'required|string',
+            'estado'=> 'required|string',
+            'fechaCreacion'=> 'required|date',
+            'fechaActualizacion'=> 'nullable|date',
         ]);
 
         Entidad::create($request->all());
-        return redirect()->route('entidades.index')->with('success','Entidad creada satisfactoriamente');
+
+        return redirect()->route('entidades.index')->with('success', 'Entidad Creada Satisfactoriamente');
     }
 
     /**
@@ -65,17 +66,18 @@ class EntidadController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'codigo'=>'required|integer|unique:entidades,codigo', $id . 'idEntidad', 
-            'subsector'=>'required|string',
-            'nivelGobierno'=>'required|string',
-            'estado'=>'required|string',
-            'fechaCreacion'=>'required|date',
-            'fechaActualizacion'=>'nullable|date',
+            'codigo'=> 'required|integer|unique:entidades,codigo,'.$id.',idEntidad', // error
+            'subSector'=> 'required|string',
+            'nivelGobierno'=> 'required|string',
+            'estado'=> 'required|string',
+            'fechaCreacion'=> 'required|date',
+            'fechaActualizacion'=> 'nullable|date',
         ]);
 
-        $entidad=Entidad::findOrfail($id);
-        Entidad::update($request->all());
-        return redirect()->route('entidades.index')->with('success','Entidad actualizada satisfactoriamente');
+        $entidad = Entidad::findOrfail($id);
+        $entidad->update($request->all()); // error
+
+        return redirect()->route('entidades.index')->with('success', 'Entidad Actualizada Satisfactoriamente');
     }
 
     /**

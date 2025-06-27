@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Controller\EntidadController;
+use App\Http\Controllers\EntidadController;
 
 Route::get('/', function () {
     return view('inicio');

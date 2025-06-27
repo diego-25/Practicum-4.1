@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Entidad extends Model {
-    
+class Entidad extends Model
+{
     protected $primaryKey='idEntidad';
-    public $timestamps=false;
-    protected $table='entidades';
+    public $timestamps = false;
+    protected $table = 'entidades';
 
-    protected $filleable = [
+    protected $fillable =[
         'codigo',
         'subSector',
         'nivelGobierno',
@@ -19,4 +19,5 @@ class Entidad extends Model {
         'fechaCreacion',
         'fechaActualizacion'
     ];
+
 }
