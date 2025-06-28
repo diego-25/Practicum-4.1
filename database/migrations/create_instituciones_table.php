@@ -6,24 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Ejecuta la migración.
-     */
     public function up(): void
     {
        
          Schema::create('instituciones', function (Blueprint $table) {
-
-            $table->id();
-
-            // Datos básicos
-            $table->string('nombre', 150);
-            $table->string('siglas', 20)->nullable();
-            $table->string('ruc', 13)->unique();              // RUC o NIT
-            $table->string('tipo', 100)->nullable();          // Ministerio, GAD, Empresa Pública, etc.
-            $table->string('zona', 50)->nullable();           // Zonal, Distrital, etc.
-
-            // Estado (activo / inactivo)
+            $table->unsignedMediumInteger('idInstitucion', true);
+            $table->string('nombre', 255);
+            $table->string('siglas', 50)->nullable();
+            $table->string('ruc', 10)->unique();
+            $table->string('email', 255);
+            $table->string('telefono', 10);
+            $table->string('direccion', 255);
             $table->boolean('estado')->default(true);
 
             // Auditoría simple
@@ -34,14 +27,5 @@ return new class extends Migration
             //$table->timestamps();
             //$table->softDeletes();
         });
-    }
-
-    /**
-     * Revierte la migración.
-     */
-    public function down(): void
-    {
-        /* Schema::dropIfExists('instituciones');  // ← usa este si cambiaste el nombre */
-        Schema::dropIfExists('entidades');          // ← usa este si mantienes "entidades"
     }
 };

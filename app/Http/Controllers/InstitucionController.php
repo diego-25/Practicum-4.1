@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Institucion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class InstitucionController extends Controller
 {
@@ -12,8 +14,8 @@ class InstitucionController extends Controller
      */
     public function index()
     {
-        $instituciones=Institucion::all();
-        return view('instituciones.index', compact('instituciones'));
+        $institucion=Institucion::all();
+        return view('instituciones.index', compact('institucion'));
     }
 
     /**
@@ -21,7 +23,12 @@ class InstitucionController extends Controller
      */
     public function create()
     {
-        return view('instituciones.create');
+        // 1) Obtiene el próximo AUTO_INCREMENT de la tabla
+        $nextId = Institucion::max('idInstitucion') + 1;
+        // 2) Hacer de 6 digitos
+        $codigoSiguiente = str_pad($nextId, 6, '0', STR_PAD_LEFT);
+        // 3) Envía la variable a la vista
+        return view('instituciones.create', compact('codigoSiguiente'));
     }
 
     /**
@@ -32,10 +39,10 @@ class InstitucionController extends Controller
         $request->validate([
             'nombre'   => 'required|string|max:255',
             'siglas'   => 'nullable|string|max:50',
-            'ruc'      => 'required|string|max:13|unique:instituciones,ruc',
-            'email'    => 'nullable|email',
-            'telefono' => 'nullable|string|max:20',
-            'direccion'=> 'nullable|string|max:255',
+            'ruc'      => 'required|string|max:10|unique:instituciones,ruc',
+            'email'    => 'required|email|max:255',
+            'telefono' => 'required|string|max:10',
+            'direccion'=> 'required|string|max:255',
             'estado'   => 'boolean'
         ]);
 
@@ -58,7 +65,7 @@ class InstitucionController extends Controller
     public function edit($id)
     {
         $institucion=Institucion::findOrfail($id);
-        return view('instituciones.edit', compact('instituciones'));
+        return view('instituciones.edit', compact('institucion'));
     }
 
     /**
@@ -66,20 +73,19 @@ class InstitucionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $institucion = Institucion::findOrfail($id);
         $request->validate([
             'nombre'   => 'required|string|max:255',
             'siglas'   => 'nullable|string|max:50',
-            'ruc'      => "required|string|max:13|unique:instituciones,ruc,{$institucion->id}",
-            'email'    => 'nullable|email',
-            'telefono' => 'nullable|string|max:20',
-            'direccion'=> 'nullable|string|max:255',
+            'ruc'      => ['required','digits:10',Rule::unique('instituciones', 'ruc')->ignore($institucion->idInstitucion, 'idInstitucion') ],
+            'email'    => 'required|email|max:255',
+            'telefono' => 'required|string|max:10',
+            'direccion'=> 'required|string|max:255',
             'estado'   => 'boolean'
         ]);
 
-        $institucion = Institucion::findOrfail($id);
-        $institucion->update($request->all()); // error
-
-        return redirect()->route('instituciones.index')->with('success', 'Intidad Actualizada Satisfactoriamente');
+        $institucion->update($request->all());
+        return redirect()->route('instituciones.index')->with('success', 'Institucion actualizada Satisfactoriamente');
     }
 
     /**

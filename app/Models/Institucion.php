@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Institucion extends Model
 {
-    protected $primaryKey='idEntidad';
-    public $timestamps = false;
-    protected $table = 'entidades';
+    protected $primaryKey='idInstitucion';
+    public $timestamps=false;
+    protected $table='instituciones';
+    public    $incrementing=true;
+    protected $keyType='int';
     protected $fillable = [
         'nombre',
         'siglas',
@@ -22,6 +24,10 @@ class Institucion extends Model
     protected $casts = [
         'estado' => 'boolean',
     ];
+    public function getCodigoAttribute(): string
+    {
+        return str_pad($this->attributes['idInstitucion'], 6, '0', STR_PAD_LEFT);
+    }
     //public function usuarios()
     //{
     //    return $this->hasMany(User::class);

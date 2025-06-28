@@ -1,82 +1,98 @@
 @extends('layouts.app')
 
-@section('title','Nueva Institución')
+@section('title', 'Nueva Institución')
 
 @section('content')
-    
+<div class="container py-4">
+
+    <h1 class="h4 mb-4">Registrar nueva institución</h1>
+
+    {{-- Alertas de validación --}}
     @if ($errors->any())
-        <div>
-            <ul>
-                @foreach($errors->all() as $error)
-                <li> - {{$error}} </li>
+        <div class="alert alert-danger">
+            <ul class="mb-0 small">
+                @foreach ($errors->all() as $err)
+                    <li>{{ $err }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
 
-    {{-- Formulario para la creación de entidades --}}
-    <form action="{{ route('instituciones.store') }}" method="POST" class="space-y-6">
+    <form method="POST" action="{{ route('instituciones.store') }}">
         @csrf
 
-        {{-- Nombre --}}
-        <div>
-            <x-input-label for="nombre" value="Nombre *"/>
-            <x-text-input id="nombre" name="nombre" type="text" class="mt-1 block w-full"
-                          :value="old('nombre')" required maxlength="255"/>
+        {{-- Código autogenerado (solo lectura) --}}
+        <div class="form-group mb-3">
+            <label>Código</label>
+            <input type="text"
+                   class="form-control-plaintext fw-bold"
+                   value="{{ $codigoSiguiente }}"                {{-- 000001, 000057, … --}}
+                   readonly>
         </div>
 
-        {{-- Siglas --}}
-        <div>
-            <x-input-label for="siglas" value="Siglas"/>
-            <x-text-input id="siglas" name="siglas" type="text" class="mt-1 block w-1/2"
-                          :value="old('siglas')" maxlength="50" placeholder="SNP"/>
+        <div class="form-group mb-3">
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" name="nombre" type="text" required
+                   value="{{ old('nombre') }}"
+                   class="form-control @error('nombre') is-invalid @enderror">
+            @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
-        {{-- RUC --}}
-        <div>
-            <x-input-label for="ruc" value="RUC *"/>
-            <x-text-input id="ruc" name="ruc" type="text" class="mt-1 block w-1/2"
-                          :value="old('ruc')" required maxlength="13" placeholder="9999999999999"/>
+        <div class="form-group mb-3">
+            <label for="siglas">Siglas</label>
+            <input id="siglas" name="siglas" type="text"
+                   value="{{ old('siglas') }}" class="form-control">
         </div>
 
-        {{-- Correo --}}
-        <div>
-            <x-input-label for="email" value="Correo electrónico"/>
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
-                          :value="old('email')" placeholder="contacto@entidad.gob.ec"/>
+        <div class="form-group mb-3">
+            <label for="ruc">RUC *</label>
+            <input id="ruc" name="ruc" type="text" required
+                   value="{{ old('ruc') }}"
+                   class="form-control @error('ruc') is-invalid @enderror">
+                    <div class="form-text">10 dígitos numéricos</div>
+                    @error('ruc')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    @error('ruc') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
-        {{-- Teléfono --}}
-        <div>
-            <x-input-label for="telefono" value="Teléfono"/>
-            <x-text-input id="telefono" name="telefono" type="text" class="mt-1 block w-1/2"
-                          :value="old('telefono')" maxlength="20"/>
+        <div class="form-group mb-3">
+            <label for="email">Correo electrónico*</label>
+            <input id="email" name="email" type="email"
+                   value="{{ old('email') }}"
+                   class="form-control @error('email') is-invalid @enderror">
+            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
-        {{-- Dirección --}}
-        <div>
-            <x-input-label for="direccion" value="Dirección"/>
+        <div class="form-group mb-3">
+            <label for="telefono">Teléfono*</label>
+            <input id="telefono" name="telefono" type="text"
+                   value="{{ old('telefono') }}" required pattern="09\d{8}"
+                   class="form-control @error('telefono') is-invalid @enderror">
+                   <div class="form-text">Debe iniciar en 09 y tener 10 dígitos</div>
+            @error('telefono') <small class="text-danger">{{ $message }}</small> @enderror
+            @error('telefono') <div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="direccion">Dirección *</label>
             <textarea id="direccion" name="direccion" rows="2"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ old('direccion') }}</textarea>
+                      class="form-control @error('direccion') is-invalid @enderror">{{ old('direccion') }}</textarea>
+            @error('direccion')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
 
-        {{-- Estado --}}
-        <div class="flex items-center">
-            <input id="estado" name="estado" type="checkbox" value="1"
-                   class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                   {{ old('estado', true) ? 'checked' : '' }}>
-            <label for="estado" class="ml-2 text-sm text-gray-700">Activo</label>
+        <div class="form-group mb-4">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado" class="form-control">
+                <option value="1" @selected(old('estado', 1)==1)>Activo</option>
+                <option value="0" @selected(old('estado')==='0')>Inactivo</option>
+            </select>
         </div>
 
-        {{-- Botones --}}
-        <div class="pt-4 flex items-center space-x-4">
-            <x-primary-button>Guardar</x-primary-button>
-
-            <a href="{{ route('instituciones.index') }}"
-               class="text-sm text-gray-600 hover:text-indigo-600 underline">
-                Cancelar
-            </a>
-        </div>
+        <button type="submit" class="btn btn-primary">Guardar institución</button>
+        <a href="{{ route('instituciones.index') }}" class="btn btn-secondary ms-2">
+            Cancelar
+        </a>
     </form>
 </div>
 @endsection

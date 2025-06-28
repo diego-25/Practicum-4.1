@@ -3,124 +3,85 @@
 @section('title', 'Instituciones')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-6 py-8">
+<div class="container py-4">
 
-    {{-- Encabezado --}}
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-semibold flex items-center space-x-2">
-            <x-lucide-building-2 class="w-6 h-6 text-indigo-600"/>
-            <span>Catálogo de Instituciones</span>
-        </h1>
+    {{-- Encabezado + botón --}}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Listado de instituciones</h2>
 
-        @can('instituciones.create')
-            <x-primary-button
-                onclick="window.location='{{ route('instituciones.create') }}'">
-                <x-lucide-plus class="w-4 h-4 mr-1"/> Nueva institución
-            </x-primary-button>
-        @endcan
+        <a href="{{ route('instituciones.create') }}"
+           class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Nueva Institución
+        </a>
     </div>
 
-    {{-- Filtro / búsqueda --}}
-    <form method="GET" action="{{ route('instituciones.index') }}"
-          class="mb-4 grid md:grid-cols-3 gap-4">
-
-        {{-- Texto libre --}}
-        <div>
-            <x-input-label for="search" value="Buscar"/>
-            <x-text-input id="search" name="search" type="text"
-                          placeholder="Nombre, siglas o RUC"
-                          :value="request('search')" class="w-full"/>
+    {{-- Mensaje flash --}}
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                    aria-label="Close"></button>
         </div>
+    @endif
 
-        {{-- Estado --}}
-        <div>
-            <x-input-label for="estado" value="Estado"/>
-            <select id="estado" name="estado"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                <option value="">— Todos —</option>
-                <option value="1" @selected(request('estado')==='1')>Activas</option>
-                <option value="0" @selected(request('estado')==='0')>Inactivas</option>
-            </select>
-        </div>
-
-        <div class="flex items-end">
-            <x-primary-button class="h-10 px-6">Filtrar</x-primary-button>
-            <a href="{{ route('instituciones.index') }}"
-               class="ml-2 text-sm text-gray-600 hover:underline">Limpiar</a>
-        </div>
-    </form>
-
-    {{-- Tabla --}}
-    <div class="bg-white shadow rounded-lg overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">#</th>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">Nombre</th>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">Siglas</th>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">RUC</th>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">Estado</th>
-                    <th class="px-4 py-3 text-left font-medium text-gray-600">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @forelse($instituciones as $i => $inst)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ $instituciones->firstItem() + $i }}</td>
-                        <td class="px-4 py-2 font-medium">{{ $inst->nombre }}</td>
-                        <td class="px-4 py-2">{{ $inst->siglas ?? '—' }}</td>
-                        <td class="px-4 py-2">{{ $inst->ruc }}</td>
-                        <td class="px-4 py-2">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs
-                                    {{ $inst->estado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $inst->estado ? 'Activo' : 'Inactivo' }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-2 space-x-1 whitespace-nowrap">
-                            @can('instituciones.edit')
-                                <x-secondary-button
-                                    onclick="window.location='{{ route('instituciones.edit', $inst) }}'">
-                                    <x-lucide-pencil-line class="w-4 h-4"/>
-                                </x-secondary-button>
-                            @endcan
-
-                            @can('instituciones.show')
-                                <x-secondary-button
-                                    onclick="window.location='{{ route('instituciones.show', $inst) }}'">
-                                    <x-lucide-eye class="w-4 h-4"/>
-                                </x-secondary-button>
-                            @endcan
-
-                            @can('instituciones.destroy')
-                                <x-danger-button
-                                    onclick="document.getElementById('del-{{ $inst->id }}').submit()">
-                                    <x-lucide-trash-2 class="w-4 h-4"/>
-                                </x-danger-button>
-
-                                {{-- Formulario oculto para DELETE --}}
-                                <form id="del-{{ $inst->id }}" method="POST"
-                                      action="{{ route('instituciones.destroy', $inst) }}"
-                                      class="hidden">
-                                    @csrf @method('DELETE')
-                                </form>
-                            @endcan
-                        </td>
-                    </tr>
-                @empty
+    {{-- Tabla responsive --}}
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">
-                            No se encontraron instituciones.
-                        </td>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Siglas</th>
+                        <th scope="col">RUC</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col" class="text-end">Acciones</th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                </thead>
 
-    {{-- Paginación --}}
-    <div class="mt-6">
-        {{ $instituciones->withQueryString()->links() }}
+                <tbody>
+                    @foreach ($institucion as $inst)
+                        <tr>
+                            <td>{{ $inst->codigo }}</td>
+                            <td>{{ $inst->nombre }}</td>
+                            <td>{{ $inst->siglas }}</td>
+                            <td>{{ $inst->ruc }}</td>
+                            <td>{{ $inst->email }}</td>
+                            <td>{{ $inst->telefono }}</td>
+                            <td>{{ $inst->direccion }}</td>
+                            <td>
+                                <span class="badge {{ $inst->estado ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ $inst->estado ? 'Activo' : 'Inactivo' }}
+                                </span>
+                            </td>
+
+                            <td class="text-end">
+                                <div class="btn-group-vertical" role="group" aria-label="Acciones">
+                                    {{-- Botón Editar --}}
+                                    <a href="{{ route('instituciones.edit', $inst) }}"
+                                       class="btn btn-sm btn-outline-secondary me-1">
+                                        <i class="bi bi-pencil-square me-1"></i> Editar
+                                    </a>
+                                    {{-- Botón Eliminar --}}
+                                    <form action="{{ route('instituciones.destroy', $inst) }}"
+                                          method="POST" class="d-inline"
+                                          onsubmit="return confirm('¿Está seguro de eliminar esta institución?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+                                            <i class="bi bi-trash me-1"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection
