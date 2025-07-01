@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('telefono', 10);
             $table->string('direccion', 255);
             $table->boolean('estado')->default(true);
+            //$table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
 
-            // Auditoría simple
-            //$table->foreignId('created_by')->nullable()
-            //      ->constrained('users')->nullOnDelete();
             //$table->foreignId('updated_by')->nullable()
             //      ->constrained('users')->nullOnDelete();
             //$table->timestamps();
