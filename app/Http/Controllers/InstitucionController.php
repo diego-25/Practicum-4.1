@@ -14,8 +14,8 @@ class InstitucionController extends Controller
      */
     public function index()
     {
-        $institucion=Institucion::all();
-        return view('instituciones.index', compact('institucion'));
+        $instituciones=Institucion::all();
+        return view('instituciones.index', compact('instituciones'));
     }
 
     /**
@@ -39,7 +39,7 @@ class InstitucionController extends Controller
         $request->validate([
             'nombre'   => 'required|string|max:255',
             'siglas'   => 'nullable|string|max:50',
-            'ruc'      => 'required|string|max:10|unique:instituciones,ruc',
+            'ruc'      => 'required|digits:10|unique:instituciones,ruc',
             'email'    => 'required|email|max:255',
             'telefono' => 'required|string|max:10',
             'direccion'=> 'required|string|max:255',
@@ -47,14 +47,13 @@ class InstitucionController extends Controller
         ]);
 
         Institucion::create($request->all());
-
         return redirect()->route('instituciones.index')->with('success', 'Institucion Creada Satisfactoriamente');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Institucion $instituciones)
+    public function show(Institucion $institucion)
     {
         //
     }

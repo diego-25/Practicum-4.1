@@ -2,55 +2,58 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
+        'nombre', 
+        'email', 
         'password',
-        'telefono',
-        'cargo',
-        'estado',
+        'telefono', 
+        'cargo', 
+        'estado', 
         'actor',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
+
     protected $casts = [
-        'email_verified_at'=>'datetime'
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
+        'estado'            => 'boolean',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    /** Guard explícito (útil si agregas más guards) */
+    // protected string $guard_name = 'web';
+
+    /** Actor → Roles */
+    public const ACTOR_ROLE_MAP = [
+        'ADMIN_SISTEMA'         => ['Tecnico','Funcional','Control','Reportador'],
+        'TECNICO_PLANIFICACION' => ['Tecnico'],
+        'REVISOR_INSTITUCIONAL' => ['Funcional','Control'],
+        'AUTORIDAD_VALIDANTE'   => ['Control'],
+        'USUARIO_EXTERNO'       => ['Reportador'],
+        'AUDITOR'               => ['Control','Reportador'],
+    ];
+
+    protected static function booted(): void
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        static::created(function (self $user) {
+            $roleNames = self::ACTOR_ROLE_MAP[$user->actor] ?? [];
+
+            // si ya los sembraste usa assignRole directamente
+            foreach ($roleNames as $name) {
+                Role::findOrCreate($name, $user->guard_name); // garantiza existencia
+            }
+
+            $user->syncRoles($roleNames); // asigna/sincroniza
+        });
     }
 }

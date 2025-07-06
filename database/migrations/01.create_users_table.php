@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('telefono',10)->nullable();
-            $table->string('cargo',100)->nullable();
+            $table->string('telefono',10);
+            $table->string('cargo',100);
             $table->boolean('estado')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('actor', ['ADMIN_SISTEMA','TECNICO_PLANIFICACION','REVISOR_INSTITUCIONAL','AUTORIDAD_VALIDANTE','USUARIO_EXTERNO','AUDITOR',]);

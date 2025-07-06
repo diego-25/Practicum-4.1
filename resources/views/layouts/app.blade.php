@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{-- CSRF --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{-- Título --}}
     <title>Sistema Integrado de Planificación e Inversión Pública - SIPeIP - @yield('title')</title>
 
-    {{-- Estilos clásicos --}}
-    <link rel="stylesheet" href="{{ asset('css/estilos.css') }}"> {{-- Crea este archivo si quieres estilos personalizados --}}
+    {{-- Google Fonts (Roboto) --}}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-    {{-- Fuente opcional --}}
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    {{-- Bootstrap --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" defer></script>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -52,24 +56,32 @@
             text-align: center;
         }
     </style>
+
 </head>
+
 <body>
-        {{-- Header --}}
-        <header>
+    <header>
            <h1>Sistema Integrado de Planificación e Inversión Pública</h1> 
-        </header>
-        {{-- Barras de Navegacion --}}
-        <nav>
-            <a href="{{ url('/')}}">Inicio</a>
-            <a href="{{ route('instituciones.index')}}">Instituciones</a>
-        </nav>
-        {{-- Contenido Principal --}}
-        <main>
+    </header>
+
+    {{-- NAVBAR --}}
+
+    <nav class="d-flex me-auto gap-3 ">
+        <a href="{{ url('/dashboard')}}">Inicio</a>
+        <a href="{{ route('instituciones.index')}}"">Instituciones</a>
+        <a href="{{ route('usuarios.index')}}">Usuarios</a>
+    </nav>
+
+    {{-- CONTENIDO --}}
+    <main class="flex-grow-1 py-4">
+        <div class="container">
             @yield('content')
-        </main>
-        {{-- Pie de página --}}
-        <footer>
-            <small>&copy; </small>
-        </footer>
+        </div>
+    </main>
+
+    {{-- Footer --}}
+    <footer class="bg-white border-top py-3 text-center text-muted small">
+        <small>&copy; </small>
+    </footer>
 </body>
 </html>

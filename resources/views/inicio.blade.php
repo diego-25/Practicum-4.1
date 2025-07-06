@@ -10,4 +10,7 @@
     <ul class="list-disc ml-6 text-blue-700">
         <li><a href="{{route('instituciones.index')}}">Instituciones</a></li>
     </ul>
+    <ul class="list-disc ml-6 text-blue-700">
+        <li><a href="{{route('usuarios.index')}}">Usuarios</a></li>
+    </ul>
 @endsection
