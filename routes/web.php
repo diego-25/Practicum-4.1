@@ -12,8 +12,7 @@ use App\Http\Controllers\InstitucionController;
 */
 Route::get('/', function () {
     return view('welcome');
-})->middleware(['auth', 'verified'])
-  ->name('dashboard');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +40,7 @@ Route::middleware('auth')->group(function () {
 | Usuarios – solo rol admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'role:Control'])->group(function () {
     Route::resource('usuarios', UserController::class)->except(['show']);
 });
 

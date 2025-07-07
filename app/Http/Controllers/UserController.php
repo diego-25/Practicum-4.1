@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         $roles  = Role::pluck('name', 'id');
         $actors = array_keys(User::ACTOR_ROLE_MAP);
-        return view('users.create', compact('roles','actors'));
+        return view('usuarios.create', compact('roles','actors'));
     }
 
     /**
@@ -85,7 +85,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $request->validate([
-            'name'   => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
             'email'    => ['required','email','max:255', Rule::unique('users','email')->ignore($user->id)],
             'password' => 'required|min:8|confirmed',
             'telefono' => 'required|digits:10',

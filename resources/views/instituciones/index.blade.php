@@ -82,10 +82,6 @@
                 </tbody>
             </table>
         </div>
-        {{-- Paginación --}}
-        <div class="card-footer text-end">
-            {{ $instituciones->links() }}
-        </div>
     </div>
 </div>
 @endsection

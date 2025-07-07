@@ -12,8 +12,10 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
+    protected $primaryKey='idUsuario';
+    protected $table='users';
     protected $fillable = [
-        'nombre', 
+        'name', 
         'email', 
         'password',
         'telefono', 
