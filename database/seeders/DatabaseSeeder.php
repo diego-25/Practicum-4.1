@@ -16,16 +16,19 @@ class DatabaseSeeder extends Seeder
         /* 2. Usuario administrador principal */
         $admin = User::factory()->create([
             'name'              => 'Administrador',
-            'email'             => 'admin@sipeip.test',
-            'password'          => 'admin123',       // se hashea por el cast 'hashed'
+            'email'             => 'administrador@sipeip.test',
+            'password'          => 'administrador',
+            'telefono'          => '0999999999',
+            'cargo'             => 'Gerente TI',
             'actor'             => 'ADMIN_SISTEMA',
+            'estado'            => true,
             'email_verified_at' => now(),
         ]);
 
-        // Asigna todos los roles base del actor + alguno extra si quieres
+        // Asigna los roles
         $admin->syncRoles(['Tecnico','Funcional','Control','Reportador']);
 
         /* 3. Usuarios de demo */
-        User::factory(20)->create();   // generará distintos actores y roles (hook booted)
+        User::factory(3)->create();
     }
 }

@@ -13,6 +13,8 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles;
 
     protected $primaryKey='idUsuario';
+    public $incrementing = true;
+    protected $keyType   = 'int';
     protected $table='users';
     protected $fillable = [
         'name', 

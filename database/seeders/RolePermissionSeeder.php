@@ -102,9 +102,12 @@ class RolePermissionSeeder extends Seeder
             // Control
             Role::findByName('Control')->syncPermissions([
                 ...$allView,
-                'objetivos.approve','planes.approve',
+                'objetivos.approve',
+                'planes.approve',
                 'proyectos.send_dictamen',
-                'auditoria.view','reportes.view',
+                'auditoria.view',
+                'reportes.view',
+                'usuarios.edit',
             ]);
 
             // Reportador

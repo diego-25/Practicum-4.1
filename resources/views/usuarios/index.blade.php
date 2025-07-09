@@ -40,10 +40,11 @@
                         <th class="text-center" style="width:150px;">Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse ($usuarios as $usuario)
                         <tr>
-                            <td>{{ $usuario->id }}</td>
+                            <td>{{ $usuario->idUsuario }}</td>
                             <td>{{ $usuario->name }}</td>
                             <td>{{ $usuario->email }}</td>
                             <td><span class="badge bg-info">{{ $usuario->actor }}</span></td>
@@ -57,24 +58,25 @@
                                     {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
                                 </span>
                             </td>
-                            <td class="text-center">
+                            <td class="text-end">
 
-                                {{-- Editar --}}
-                                <a href="{{ route('usuarios.edit', $usuario) }}"
-                                   class="btn btn-sm btn-warning">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-
-                                {{-- Eliminar --}}
-                                <form action="{{ route('usuarios.destroy', $usuario->idusuario) }}"
-                                      method="POST" class="d-inline"
-                                      onsubmit="return confirm('¿Eliminar este usuario?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                <div class="btn-group-vertical" role="group" aria-label="Acciones">
+                                    {{-- Botón Editar --}}
+                                    <a href="{{ route('usuarios.edit', $usuario) }}"
+                                       class="btn btn-sm btn-outline-secondary me-1">
+                                        <i class="bi bi-pencil-square me-1"></i> Editar
+                                    </a>
+                                    {{-- Botón Eliminar --}}
+                                    <form action="{{ route('usuarios.destroy', ['usuario' => $usuario->idUsuario]) }}"
+                                          method="POST" class="d-inline"
+                                          onsubmit="return confirm('¿Está seguro de eliminar esta usuario?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+                                            <i class="bi bi-trash me-1"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

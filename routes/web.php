@@ -40,8 +40,8 @@ Route::middleware('auth')->group(function () {
 | Usuarios – solo rol admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:Control'])->group(function () {
-    Route::resource('usuarios', UserController::class)->except(['show']);
+Route::middleware(['auth','role:Control|Tecnico|Funcional'])->group(function () {
+    Route::resource('usuarios', UserController::class)->except('show');
 });
 
 /*

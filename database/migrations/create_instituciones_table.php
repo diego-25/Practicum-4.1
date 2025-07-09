@@ -10,7 +10,7 @@ return new class extends Migration
     {
        
          Schema::create('instituciones', function (Blueprint $table) {
-            $table->unsignedMediumInteger('idInstitucion', true);
+            $table->mediumIncrements('idInstitucion', true);
             $table->string('nombre', 255);
             $table->string('siglas', 50)->nullable();
             $table->string('ruc', 10)->unique();

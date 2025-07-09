@@ -70,6 +70,13 @@
         <a href="{{ url('/dashboard')}}">Inicio</a>
         <a href="{{ route('instituciones.index')}}"">Instituciones</a>
         <a href="{{ route('usuarios.index')}}">Usuarios</a>
+        {{-- Cerrar sesión --}}
+        <form method="POST" action="{{ route('logout') }}" class="ms-auto">
+            @csrf
+            <button class="btn btn-link text-white text-decoration-none p-0">
+                Cerrar sesión
+            </button>
+        </form>
     </nav>
 
     {{-- CONTENIDO --}}
