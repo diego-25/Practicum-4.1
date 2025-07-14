@@ -35,6 +35,7 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Actor</th>
+                        <th>Instituciones</th>
                         <th>Roles</th>
                         <th>Estado</th>
                         <th class="text-center" style="width:150px;">Acciones</th>
@@ -48,6 +49,13 @@
                             <td>{{ $usuario->name }}</td>
                             <td>{{ $usuario->email }}</td>
                             <td><span class="badge bg-info">{{ $usuario->actor }}</span></td>
+                            <td>
+                                @forelse ($usuario->instituciones as $inst)
+                                    <span class="badge bg-primary">{{ $inst->nombre }}</span>
+                                @empty
+                                    <span class="text-muted">—</span>
+                                @endforelse
+                            </td>
                             <td>
                                 @foreach ($usuario->getRoleNames() as $role)
                                     <span class="badge bg-secondary">{{ $role }}</span>

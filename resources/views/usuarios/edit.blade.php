@@ -86,6 +86,32 @@
             @error('actor') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
+        {{-- Instituciuones --}}
+        <div class="form-group mb-4">
+            <label for="instituciones">Instituciones</label>
+
+            <select id="instituciones"
+                    name="instituciones[]"
+                    class="form-select @error('instituciones') is-invalid @enderror"
+                    multiple
+                    size="5">
+                @foreach ($instituciones as $id => $nombre)
+                    <option value="{{ $id }}"
+                            @selected( in_array($id, old('instituciones', $userInstituciones ?? [])) )>
+                        {{ $nombre }}
+                    </option>
+                @endforeach
+            </select>
+
+            <div class="form-text">
+                Mantén pulsado <kbd>Ctrl</kbd> para seleccionar mas de una.
+            </div>
+
+            @error('instituciones')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
         {{-- Estado --}}
         <div class="form-group mb-4">
             <label for="estado">Estado</label>

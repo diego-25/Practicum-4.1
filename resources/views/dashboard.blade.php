@@ -25,6 +25,13 @@
                     <i class="bi bi-building"></i>
                 </a>
             </div>
+
+            <div class="col-12 col-md-6 col-xl-4">
+                <a href="{{ route('objetivos.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
+                    <span>Gestionar objetivos</span>
+                    <i class="bi bi-building"></i>
+                </a>
+            </div>
         @endrole
     </div>
 

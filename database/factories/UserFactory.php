@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\User; 
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -32,9 +32,9 @@ class UserFactory extends Factory
             'password'          => 'password',
             'telefono'          => $this->faker->regexify('09[0-9]{8}'),
             'cargo'             => $this->faker->randomElement(['Analista', 'Inspector', 'Técnico', 'Coordinador']),
-            'estado'            => $this->faker->boolean(100),
+            'estado'            => true,
             'actor'             => $this->faker->randomElement(array_keys(User::ACTOR_ROLE_MAP)),
-            'remember_token' => Str::random(10),
+            'remember_token'    => Str::random(10),
         ];
     }
 

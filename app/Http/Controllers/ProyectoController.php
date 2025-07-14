@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PlanInstitucional;
+use App\Models\Proyecto;
 use Illuminate\Http\Request;
 
-class PlanInstitucionalController extends Controller
+class ProyectoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class PlanInstitucionalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PlanInstitucional $planInstitucional)
+    public function show(ProyectoInstitucional $proyectoInstitucional)
     {
         //
     }
@@ -42,7 +42,7 @@ class PlanInstitucionalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PlanInstitucional $planInstitucional)
+    public function edit(ProyectoInstitucional $proyectoInstitucional)
     {
         //
     }
@@ -50,7 +50,7 @@ class PlanInstitucionalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PlanInstitucional $planInstitucional)
+    public function update(Request $request, ProyectoInstitucional $proyectoInstitucional)
     {
         //
     }
@@ -58,7 +58,7 @@ class PlanInstitucionalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PlanInstitucional $planInstitucional)
+    public function destroy(ProyectoInstitucional $proyectoInstitucional)
     {
         //
     }

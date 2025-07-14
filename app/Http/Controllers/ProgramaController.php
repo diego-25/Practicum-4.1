@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProgramaInstitucional;
+use App\Models\Programa;
 use Illuminate\Http\Request;
 
-class ProgramaInstitucionalController extends Controller
+class ProgramaController extends Controller
 {
     /**
      * Display a listing of the resource.

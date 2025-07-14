@@ -11,9 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan_institucionals', function (Blueprint $table) {
-            $table->id();
+        Schema::create('plan', function (Blueprint $table) {
+            $table->mediumIncrements('idPlan');
+            $table->mediumInteger('idPrograma')->unsigned();    // FK
+            $table->string('codigo', 20)->unique()->nullable();
+            $table->string('nombre', 255);
+            $table->text('descripcion')->nullable();
+            $table->date('vigencia_desde')->nullable();
+            $table->date('vigencia_hasta')->nullable();
+            $table->boolean('estado')->default(true);  // activo / inactivo
             $table->timestamps();
+            //$table->foreign('idPrograma')->references('idPrograma')->on('programas_institucionales')->onDelete('cascade');
         });
     }
 
@@ -22,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan_institucionals');
+        Schema::dropIfExists('plan');
     }
 };

@@ -85,6 +85,31 @@
             @error('actor') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
+        {{-- Institucion --}}
+        <div class="form-group mb-4">
+            <label for="instituciones">Instituciones *</label>
+
+            <select id="instituciones"
+                    name="instituciones[]"
+                    class="form-select @error('instituciones') is-invalid @enderror"
+                    multiple
+                    size="5">
+                @foreach ($instituciones as $id => $nombre)
+                    <option value="{{ $id }}" @selected( in_array($id, old('instituciones', [])) )>
+                        {{ $nombre }}
+                    </option>
+                @endforeach
+            </select>
+
+            <div class="form-text">
+                Mantén pulsado <kbd>Ctrl</kbd> para seleccionar mas de una.
+            </div>
+
+            @error('instituciones')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
         {{-- Estado --}}
         <div class="form-group mb-4">
             <label for="estado">Estado</label>
@@ -93,23 +118,6 @@
                 <option value="0" @selected(old('estado')==='0')>Inactivo</option>
             </select>
         </div>
-
-        {{-- (Opcional) Roles extra: descomenta si alguna vez permites roles adicionales
-        <div class="mb-4">
-            <label class="form-label d-block">Roles adicionales</label>
-            @foreach ($roles as $id => $rol)
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           id="role{{ $id }}"
-                           name="roles[]"
-                           value="{{ $id }}"
-                           @checked( in_array($id, old('roles', [])) )>
-                    <label class="form-check-label" for="role{{ $id }}">{{ $rol }}</label>
-                </div>
-            @endforeach
-        </div>
-        --}}
 
         <button type="submit" class="btn btn-primary">Guardar usuario</button>
         <a href="{{ route('usuarios.index') }}" class="btn btn-secondary ms-2">Cancelar</a>

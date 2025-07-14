@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InstitucionController;
+use App\Http\Controllers\ObjetivoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Perfil – cualquier usuario autenticado
+| Perfil –
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -37,7 +38,7 @@ Route::middleware('auth')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Usuarios – solo rol admin
+| Usuarios
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth','role:Control|Tecnico|Funcional'])->group(function () {
@@ -46,7 +47,16 @@ Route::middleware(['auth','role:Control|Tecnico|Funcional'])->group(function () 
 
 /*
 |--------------------------------------------------------------------------
-| Instituciones – solo rol Control
+| Objetivos
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:Control'])->group(function () {
+    Route::resource('objetivos', ObjetivoController::class)->except(['show']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Instituciones
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:Control'])->group(function () {

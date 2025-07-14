@@ -34,9 +34,6 @@ class User extends Authenticatable
         'estado'            => 'boolean',
     ];
 
-    /** Guard explícito (útil si agregas más guards) */
-    // protected string $guard_name = 'web';
-
     /** Actor → Roles */
     public const ACTOR_ROLE_MAP = [
         'ADMIN_SISTEMA'         => ['Tecnico','Funcional','Control','Reportador'],
@@ -52,12 +49,22 @@ class User extends Authenticatable
         static::created(function (self $user) {
             $roleNames = self::ACTOR_ROLE_MAP[$user->actor] ?? [];
 
-            // si ya los sembraste usa assignRole directamente
+            //assignRole directamente
             foreach ($roleNames as $name) {
                 Role::findOrCreate($name, $user->guard_name); // garantiza existencia
             }
 
             $user->syncRoles($roleNames); // asigna/sincroniza
         });
+    }
+
+    public function instituciones()
+    {
+        return $this->belongsToMany(
+            Institucion::class,
+            'institucion_user',      // tabla pivote
+            'idUsuario',             // FK local
+            'idInstitucion'          // FK relacionada
+        );
     }
 }

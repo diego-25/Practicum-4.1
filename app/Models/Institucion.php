@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Institucion extends Model
 {
+    use HasFactory;
     protected $primaryKey='idInstitucion';
     public $timestamps=false;
     protected $table='instituciones';
@@ -28,12 +29,17 @@ class Institucion extends Model
     {
         return str_pad($this->attributes['idInstitucion'], 6, '0', STR_PAD_LEFT);
     }
-    //public function usuarios()
-    //{
-    //    return $this->hasMany(User::class);
-    //}
     //public function planes()
     //{
     //    return $this->hasMany(PlanInstitucional::class);
     //}
+    public function usuarios()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'institucion_user',
+            'idInstitucion',
+            'idUsuario'
+        );
+    }
 }

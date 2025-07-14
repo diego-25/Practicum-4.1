@@ -4,16 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Institucion;
+use App\Models\Objetivo;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        /* 1. Roles y permisos */
+        // Roles y permisos
         $this->call(RolePermissionSeeder::class);
 
-        /* 2. Usuario administrador principal */
+        // Usuario administrador principal
         $admin = User::factory()->create([
             'name'              => 'Administrador',
             'email'             => 'administrador@sipeip.test',
@@ -28,7 +30,9 @@ class DatabaseSeeder extends Seeder
         // Asigna los roles
         $admin->syncRoles(['Tecnico','Funcional','Control','Reportador']);
 
-        /* 3. Usuarios de demo */
+        // Usuarios de demo
         User::factory(3)->create();
+        Institucion::factory(10)->create();
+        Objetivo::factory(5)->create();
     }
 }
