@@ -11,7 +11,7 @@ class Institucion extends Model
     protected $primaryKey='idInstitucion';
     public $timestamps=false;
     protected $table='instituciones';
-    public    $incrementing=true;
+    public $incrementing=true;
     protected $keyType='int';
     protected $fillable = [
         'nombre',
@@ -25,13 +25,9 @@ class Institucion extends Model
     protected $casts = [
         'estado' => 'boolean',
     ];
-    public function getCodigoAttribute(): string
-    {
-        return str_pad($this->attributes['idInstitucion'], 6, '0', STR_PAD_LEFT);
-    }
     //public function planes()
     //{
-    //    return $this->hasMany(PlanInstitucional::class);
+    //    return $this->hasMany(Plan::class);
     //}
     public function usuarios()
     {

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InstitucionController;
 use App\Http\Controllers\ObjetivoController;
+use App\Http\Controllers\ProgramaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +43,7 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth','role:Control|Tecnico|Funcional'])->group(function () {
-    Route::resource('usuarios', UserController::class)->except('show');
+    Route::resource('usuarios', UserController::class);
 });
 
 /*
@@ -51,7 +52,7 @@ Route::middleware(['auth','role:Control|Tecnico|Funcional'])->group(function () 
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:Control'])->group(function () {
-    Route::resource('objetivos', ObjetivoController::class)->except(['show']);
+    Route::resource('objetivos', ObjetivoController::class);
 });
 
 /*
@@ -60,9 +61,17 @@ Route::middleware(['auth', 'role:Control'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'role:Control'])->group(function () {
-    Route::resource('instituciones', InstitucionController::class)->except(['show']);
+    Route::resource('instituciones', InstitucionController::class);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Programas
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:Control'])->group(function () {
+    Route::resource('programas', ProgramaController::class);
+});
 /*
 |--------------------------------------------------------------------------
 | Rutas de autenticación de Breeze

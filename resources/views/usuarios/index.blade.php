@@ -48,24 +48,19 @@
                             <td>{{ $usuario->idUsuario }}</td>
                             <td>{{ $usuario->name }}</td>
                             <td>{{ $usuario->email }}</td>
-                            <td><span class="badge bg-info">{{ $usuario->actor }}</span></td>
-                            <td>
+                            <td>{{ $usuario->actor }}<td>
                                 @forelse ($usuario->instituciones as $inst)
-                                    <span class="badge bg-primary">{{ $inst->nombre }}</span>
+                                    {{ $inst->nombre }}
                                 @empty
-                                    <span class="text-muted">—</span>
+                                    —
                                 @endforelse
                             </td>
                             <td>
                                 @foreach ($usuario->getRoleNames() as $role)
-                                    <span class="badge bg-secondary">{{ $role }}</span>
+                                    {{ $role }}
                                 @endforeach
                             </td>
-                            <td>
-                                <span class="badge {{ $usuario->estado ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </td>
+                            <td>{{ $usuario->estado ? 'Activo' : 'Inactivo' }}</td>
                             <td class="text-end">
 
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">

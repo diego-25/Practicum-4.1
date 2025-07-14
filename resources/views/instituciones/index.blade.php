@@ -15,7 +15,7 @@
         </a>
     </div>
 
-    {{-- Mensaje flash --}}
+    {{-- Mensaje --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -24,10 +24,10 @@
         </div>
     @endif
 
-    {{-- Tabla responsive --}}
+    {{-- Tabla --}}
     <div class="card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0 align-middle">
+            <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
                     <tr>
                         <th scope="col">ID</th>
@@ -45,18 +45,14 @@
                 <tbody>
                     @foreach ($instituciones as $inst)
                         <tr>
-                            <td>{{ $inst->codigo }}</td>
+                            <td>{{ $inst->idInstitucion }}</td>
                             <td>{{ $inst->nombre }}</td>
                             <td>{{ $inst->siglas }}</td>
                             <td>{{ $inst->ruc }}</td>
                             <td>{{ $inst->email }}</td>
                             <td>{{ $inst->telefono }}</td>
                             <td>{{ $inst->direccion }}</td>
-                            <td>
-                                <span class="badge {{ $inst->estado ? 'bg-success' : 'bg-secondary' }}">
-                                    {{ $inst->estado ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </td>
+                            <td>{{ $inst->estado ? 'Activo' : 'Inactivo' }}</td>
 
                             <td class="text-end">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">

@@ -23,11 +23,8 @@ class InstitucionController extends Controller
      */
     public function create()
     {
-        // 1) Obtiene el próximo AUTO_INCREMENT de la tabla
         $nextId = Institucion::max('idInstitucion') + 1;
-        // 2) Hacer de 6 digitos
         $codigoSiguiente = str_pad($nextId, 6, '0', STR_PAD_LEFT);
-        // 3) Envía la variable a la vista
         return view('instituciones.create', compact('codigoSiguiente'));
     }
 

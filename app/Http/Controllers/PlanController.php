@@ -25,7 +25,7 @@ class PlanController extends Controller
     {
         $nextId         = PlanInstitucional::max('idPlan') + 1;
         $codigoSiguiente = 'PL-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
-        $programas = ProgramaInstitucional::orderBy('nombre')->pluck('nombre','idPrograma');
+        $programas = Programa::orderBy('nombre')->pluck('nombre','idPrograma');
         return view('planes.create', compact('codigoSiguiente','programas'));
     }
 
@@ -62,7 +62,7 @@ class PlanController extends Controller
     public function edit($id)
     {
         $plan = Plan::findOrFail($id);
-        $programas = ProgramaInstitucional::orderBy('nombre')->pluck('nombre','idPrograma');
+        $programas = Programa::orderBy('nombre')->pluck('nombre','idPrograma');
         return view('planes.edit', compact('plan','programas'));
     }
 

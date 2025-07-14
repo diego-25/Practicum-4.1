@@ -15,6 +15,18 @@ class DatabaseSeeder extends Seeder
         // Roles y permisos
         $this->call(RolePermissionSeeder::class);
 
+        //SIPeIP
+        $sipeip = Institucion::firstOrCreate([
+                'nombre'    => 'Sistema Integrado de Planificación e Inversión Pública',
+                'siglas'    => 'SIPeIP',
+                'ruc'       => '9999999999',
+                'email'     => 'sipeip@ejemplo.com',
+                'telefono'  => '0999999999',
+                'direccion' => 'Quito, Ecuador',
+                'estado'    => true,
+            ]
+        );
+
         // Usuario administrador principal
         $admin = User::factory()->create([
             'name'              => 'Administrador',
@@ -29,10 +41,15 @@ class DatabaseSeeder extends Seeder
 
         // Asigna los roles
         $admin->syncRoles(['Tecnico','Funcional','Control','Reportador']);
+        //juntar sipeip con admin
+        $admin->instituciones()->syncWithoutDetaching([$sipeip->idInstitucion]);
 
-        // Usuarios de demo
-        User::factory(3)->create();
-        Institucion::factory(10)->create();
+        // clases de demo
+        $instituciones = Institucion::factory(10)->create();
+        User::factory(5)->create()->each(function (User $user) use ($instituciones) {
+            $id = $instituciones->random()->idInstitucion;
+            $user->instituciones()->attach($id);
+        });
         Objetivo::factory(5)->create();
     }
 }

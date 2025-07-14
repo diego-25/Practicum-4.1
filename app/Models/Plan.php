@@ -33,7 +33,7 @@ class Plan extends Model
     public function programa()
     {
         return $this->belongsTo(
-            ProgramaInstitucional::class,
+            Programa::class,
             'idPrograma',
             'idPrograma'
         );

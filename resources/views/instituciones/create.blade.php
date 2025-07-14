@@ -26,7 +26,7 @@
             <label>Código</label>
             <input type="text"
                    class="form-control-plaintext fw-bold"
-                   value="{{ $codigoSiguiente }}"                {{-- 000001, 000057, … --}}
+                   value="{{ $codigoSiguiente }}"
                    readonly>
         </div>
 

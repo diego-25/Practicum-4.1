@@ -1,31 +1,28 @@
 @extends('layouts.app')
 
-@section('title', 'Objetivos estratégicos')
+@section('title', 'Programas institucionales')
 
 @section('content')
 <div class="container">
 
-    {{-- Tarjeta envolvente --}}
     <div class="card shadow-sm">
-
-        {{-- Encabezado --}}
+        {{-- ENCABEZADO + BOTÓN NUEVO --}}
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Listado de objetivos</h5>
-
-            <a href="{{ route('objetivos.create') }}" class="btn btn-primary btn-sm">
+            <h5 class="mb-0">Listado de programas</h5>
+            <a href="{{ route('programas.create') }}" class="btn btn-primary btn-sm">
                 <i class="bi bi-plus-circle"></i> Nuevo
             </a>
         </div>
 
-        {{-- Flash de éxito --}}
+        {{-- FLASH --}}
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <div class="alert alert-success alert-dismissible fade show m-3">
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
 
-        {{-- Tabla --}}
+        {{-- TABLA --}}
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle mb-0">
                 <thead class="table-light">
@@ -33,42 +30,47 @@
                         <th>ID</th>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Tipo</th>
+                        <th>Objetivo estratégico</th>
                         <th>Vigencia</th>
                         <th>Estado</th>
-                        <th class="text-center" style="width:150px;">Acciones</th>
+                        <th style="width:150px;" class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($objetivos as $obj)
+                    @forelse ($programas as $prog)
                         <tr>
-                            <td>{{ $obj->idObjetivo }}</td>
-                            <td>{{ $obj->codigo ?? '—' }}</td>
-                            <td>{{ $obj->nombre }}</td>
-                            <td>{{ $obj->tipo }}</td>
+                            <td>{{ $prog->idPrograma }}</td>
+                            <td>{{ $prog->codigo ?? '—' }}</td>
+                            <td>{{ $prog->nombre }}</td>
+
+                            {{-- Objetivo Estratégico --}}
+                            <td> {{ $prog->objetivo->nombre ?? '—' }}</td>
+
+                            {{-- Vigencia --}}
                             <td>
-                                @if ($obj->vigencia_desde || $obj->vigencia_hasta)
-                                    {{ optional($obj->vigencia_desde)->format('Y') ?? '—' }}
+                                @if ($prog->vigencia_desde || $prog->vigencia_hasta)
+                                    {{ optional($prog->vigencia_desde)->format('Y') ?? '—' }}
                                     –
-                                    {{ optional($obj->vigencia_hasta)->format('Y') ?? '—' }}
+                                    {{ optional($prog->vigencia_hasta)->format('Y') ?? '—' }}
                                 @else
                                     —
                                 @endif
                             </td>
-                            
-                            <td>{{ $obj->estado ? 'Activo' : 'Inactivo' }}</td>
+
+                            {{-- Estado --}}
+                            <td>{{ $prog->estado ? 'Activo' : 'Inactivo' }}</td>
 
                             <td class="text-end">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
                                     {{-- Botón Editar --}}
-                                    <a href="{{ route('objetivos.edit', $obj) }}"
+                                    <a href="{{ route('programas.edit', $prog) }}"
                                        class="btn btn-sm btn-outline-secondary me-1">
                                         <i class="bi bi-pencil-square me-1"></i> Editar
                                     </a>
                                     {{-- Botón Eliminar --}}
-                                    <form action="{{ route('objetivos.destroy', $obj) }}"
+                                    <form action="{{ route('programas.destroy', $prog) }}"
                                           method="POST" class="d-inline"
-                                          onsubmit="return confirm('¿Está seguro de eliminar este objetivo?');">
+                                          onsubmit="return confirm('¿Está seguro de eliminar este programa?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
@@ -79,17 +81,15 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="7" class="text-center">No hay objetivos registrados.</td>
-                        </tr>
+                        <tr><td colspan="7" class="text-center">No hay programas registrados.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        {{-- Paginación --}}
+        {{-- PAGINACIÓN --}}
         <div class="card-footer">
-            {{ $objetivos->links() }}
+            {{ $programas->links() }}
         </div>
     </div>
 
