@@ -36,7 +36,7 @@
                         <th>Tipo</th>
                         <th>Vigencia</th>
                         <th>Estado</th>
-                        <th class="text-center" style="width:150px;">Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,10 +55,9 @@
                                     —
                                 @endif
                             </td>
-                            
                             <td>{{ $obj->estado ? 'Activo' : 'Inactivo' }}</td>
 
-                            <td class="text-end">
+                            <td class="text-center">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
                                     {{-- Botón Editar --}}
                                     <a href="{{ route('objetivos.edit', $obj) }}"
@@ -86,9 +85,8 @@
                 </tbody>
             </table>
         </div>
-
         {{-- Paginación --}}
-        <div class="card-footer">
+        <div>
             {{ $objetivos->links() }}
         </div>
     </div>

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan', function (Blueprint $table) {
+        Schema::create('planes', function (Blueprint $table) {
             $table->mediumIncrements('idPlan');
             $table->mediumInteger('idPrograma')->unsigned();    // FK
             $table->string('codigo', 20)->unique()->nullable();

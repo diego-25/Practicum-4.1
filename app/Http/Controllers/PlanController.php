@@ -23,7 +23,7 @@ class PlanController extends Controller
      */
     public function create()
     {
-        $nextId         = PlanInstitucional::max('idPlan') + 1;
+        $nextId         = Plan::max('idPlan') + 1;
         $codigoSiguiente = 'PL-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
         $programas = Programa::orderBy('nombre')->pluck('nombre','idPrograma');
         return view('planes.create', compact('codigoSiguiente','programas'));
@@ -82,7 +82,7 @@ class PlanController extends Controller
             'estado'          => 'boolean',
         ]);
 
-        $planInstitucional->update($request->all());
+        $plan->update($request->all());
         return redirect()->route('planes.index')->with('success','Plan actualizado satisfactoriamente');
     }
 

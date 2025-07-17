@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Plan extends Model
 {
     use HasFactory;
-    protected $table = 'plan';
+    protected $table = 'planes';
     protected $primaryKey  = 'idPlan';
     public    $incrementing = true;
     protected $keyType      = 'int';

@@ -33,9 +33,9 @@ class Programa extends Model
     public function objetivo()
     {
         return $this->belongsTo(
-            ObjetivoEstrategico::class,
+            Objetivo::class,
             'idObjetivo',
-            'idObjetivoEstrategico'
+            'idObjetivo'
         );
     }
     
@@ -43,7 +43,7 @@ class Programa extends Model
     public function planes()
     {
         return $this->hasMany(
-            PlanInstitucional::class,
+            Plan::class,
             'idPrograma',
             'idPrograma'
         );
@@ -54,7 +54,7 @@ class Programa extends Model
     {
         return $this->hasManyThrough(
             ProyectoInstitucional::class,
-            PlanInstitucional::class,
+            Plan::class,
             'idPrograma',
             'idPlan',
             'idPrograma',

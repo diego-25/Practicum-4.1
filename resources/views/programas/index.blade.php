@@ -33,7 +33,7 @@
                         <th>Objetivo estratégico</th>
                         <th>Vigencia</th>
                         <th>Estado</th>
-                        <th style="width:150px;" class="text-center">Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,7 +60,7 @@
                             {{-- Estado --}}
                             <td>{{ $prog->estado ? 'Activo' : 'Inactivo' }}</td>
 
-                            <td class="text-end">
+                            <td class="text-center">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
                                     {{-- Botón Editar --}}
                                     <a href="{{ route('programas.edit', $prog) }}"

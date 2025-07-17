@@ -33,11 +33,11 @@ class Proyecto extends Model
         'estado'            => 'boolean',
     ];
 
-    //El proyecto pertenece a un Plan Institucional
+    //El proyecto pertenece a un Plan
     public function plan()
     {
         return $this->belongsTo(
-            PlanInstitucional::class,
+            Plan::class,
             'idPlan',          // FK en esta tabla
             'idPlan'           // PK en planes
         );

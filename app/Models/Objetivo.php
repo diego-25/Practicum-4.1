@@ -47,7 +47,7 @@ class Objetivo extends Model
     public function planes()
     {
         return $this->hasManyThrough(
-            PlanInstitucional::class,
+            Plan::class,
             Programa::class,
             'idObjetivo',
             'idPrograma',

@@ -22,21 +22,35 @@
             <div class="col-12 col-md-6 col-xl-4">
                 <a href="{{ route('instituciones.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
                     <span>Gestionar instituciones</span>
-                    <i class="bi bi-building"></i>
+                    <i class="bbi bi-people"></i>
                 </a>
             </div>
 
             <div class="col-12 col-md-6 col-xl-4">
                 <a href="{{ route('objetivos.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
                     <span>Gestionar objetivos</span>
-                    <i class="bi bi-building"></i>
+                    <i class="bi bi-people"></i>
                 </a>
             </div>
 
             <div class="col-12 col-md-6 col-xl-4">
                 <a href="{{ route('programas.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
                     <span>Gestionar programas</span>
-                    <i class="bi bi-building"></i>
+                    <i class="bi bi-people"></i>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4">
+                <a href="{{ route('planes.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
+                    <span>Gestionar planes</span>
+                    <i class="bi bi-people"></i>
+                </a>
+            </div>
+
+            <div class="col-12 col-md-6 col-xl-4">
+                <a href="{{ route('proyectos.index') }}" class="btn btn-danger w-100 py-4 d-flex justify-content-between align-items-center shadow">
+                    <span>Gestionar proyectos</span>
+                    <i class="bi bi-people"></i>
                 </a>
             </div>
         @endrole

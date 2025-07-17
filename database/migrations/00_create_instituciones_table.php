@@ -10,7 +10,8 @@ return new class extends Migration
     {
        
          Schema::create('instituciones', function (Blueprint $table) {
-            $table->mediumIncrements('idInstitucion', true);
+            $table->mediumIncrements('idInstitucion');
+            $table->string('codigo', 20)->unique()->nullable();
             $table->string('nombre', 255);
             $table->string('siglas', 50)->nullable();
             $table->string('ruc', 10)->unique();
@@ -18,12 +19,12 @@ return new class extends Migration
             $table->string('telefono', 10);
             $table->string('direccion', 255);
             $table->boolean('estado')->default(true);
-            //$table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-
-            //$table->foreignId('updated_by')->nullable()
-            //      ->constrained('users')->nullOnDelete();
-            //$table->timestamps();
-            //$table->softDeletes();
+            $table->timestamps();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('instituciones');
     }
 };

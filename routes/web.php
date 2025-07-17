@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InstitucionController;
 use App\Http\Controllers\ObjetivoController;
 use App\Http\Controllers\ProgramaController;
+use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ProyectoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +73,24 @@ Route::middleware(['auth', 'role:Control'])->group(function () {
 */
 Route::middleware(['auth', 'role:Control'])->group(function () {
     Route::resource('programas', ProgramaController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Programas
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:Control'])->group(function () {
+    Route::resource('planes', PlanController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Programas
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:Control'])->group(function () {
+    Route::resource('proyectos', ProyectoController::class);
 });
 /*
 |--------------------------------------------------------------------------

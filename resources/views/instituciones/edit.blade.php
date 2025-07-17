@@ -1,111 +1,97 @@
 @extends('layouts.app')
 
-@section('title', 'Editar institución')
+@section('title', 'Editar Institución')
 
 @section('content')
 <div class="container py-4">
 
-    {{-- Encabezado + volver --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Editar institución</h2>
-        <a href="{{ route('instituciones.index') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-1"></i> Volver al listado
-        </a>
-    </div>
+    <h1 class="h4 mb-4">Editar institución</h1>
 
-    {{-- Validación de errores --}}
+    {{-- Alertas de validación --}}
     @if ($errors->any())
         <div class="alert alert-danger">
-            <strong>Se encontraron errores:</strong>
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+            <ul class="mb-0 small">
+                @foreach ($errors->all() as $err)
+                    <li>{{ $err }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
 
-    {{-- Formulario --}}
-    <div class="card shadow-sm">
-        <div class="card-body">
+    <form method="POST" action="{{ route('instituciones.update', $institucion->idInstitucion) }}">
+        @csrf
+        @method('PUT')
 
-            <form action="{{ route('instituciones.update', $institucion) }}" method="POST" class="row g-3">
-                @csrf
-                @method('PUT')
+        {{-- Código sólo lectura (mismo look que create) --}}
+        <div class="form-group mb-3">
+            <label>Código</label>
+            <input type="text" class="form-control-plaintext fw-bold"
+                   value="{{ str_pad($institucion->idInstitucion, 6, '0', STR_PAD_LEFT) }}" readonly>
+        </div>
 
-                {{-- Código --}}
-                <div class="col-md-4">
-                    <label for="codigo" class="form-label fw-semibold">Código *</label>
-                    <input type="number" required class="form-control @error('codigo') is-invalid @enderror" id="codigo" name="codigo" value="{{ old('codigo', $institucion->codigo) }}">
-                    @error('codigo')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Nombre --}}
+        <div class="form-group mb-3">
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" name="nombre" type="text" required
+                   value="{{ old('nombre', $institucion->nombre) }}"
+                   class="form-control @error('nombre') is-invalid @enderror">
+            @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
 
-                {{-- Nombre --}}
-                <div class="col-md-8">
-                    <label for="nombre" class="form-label fw-semibold">Nombre *</label>
-                    <input type="text" required class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre"value="{{ old('nombre', $institucion->nombre) }}">
-                    @error('nombre')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Siglas --}}
+        <div class="form-group mb-3">
+            <label for="siglas">Siglas</label>
+            <input id="siglas" name="siglas" type="text" value="{{ old('siglas', $institucion->siglas) }}"
+                   class="form-control">
+        </div>
 
-                {{-- Siglas --}}
-                <div class="col-md-4">
-                    <label for="siglas" class="form-label fw-semibold">Siglas *</label>
-                    <input type="text" required class="form-control @error('siglas') is-invalid @enderror" id="siglas" name="siglas" value="{{ old('siglas', $institucion->siglas) }}">
-                    @error('siglas')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- RUC --}}
+        <div class="form-group mb-3">
+            <label for="ruc">RUC *</label>
+            <input id="ruc" name="ruc" type="text" required value="{{ old('ruc', $institucion->ruc) }}"
+                   class="form-control @error('ruc') is-invalid @enderror">
+            <div class="form-text">10 dígitos numéricos</div>
+            @error('ruc') <small class="text-danger">{{ $message }}</small>@enderror
+        </div>
 
-                {{-- RUC (10 dígitos) --}}
-                <div class="col-md-4">
-                    <label for="ruc" class="form-label fw-semibold">RUC *</label>
-                    <input type="text" required pattern="\d{10}" class="form-control @error('ruc') is-invalid @enderror" id="ruc" name="ruc" value="{{ old('ruc', $institucion->ruc) }}">
-                    <div class="form-text">10 dígitos numéricos</div>
-                    @error('ruc')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Email --}}
+        <div class="form-group mb-3">
+            <label for="email">Correo electrónico *</label>
+            <input id="email" name="email" type="email" required value="{{ old('email', $institucion->email) }}"
+                   class="form-control @error('email') is-invalid @enderror">
+            @error('email') <small class="text-danger">{{ $message }}</small>@enderror
+        </div>
 
-                {{-- E-mail --}}
-                <div class="col-md-4">
-                    <label for="email" class="form-label fw-semibold">E-mail *</label>
-                    <input type="email" required class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $institucion->email) }}">
-                    @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Teléfono --}}
+        <div class="form-group mb-3">
+            <label for="telefono">Teléfono *</label>
+            <input id="telefono" name="telefono" type="text" required pattern="09\d{8}"
+                   value="{{ old('telefono', $institucion->telefono) }}"
+                   class="form-control @error('telefono') is-invalid @enderror">
+            <div class="form-text">Debe iniciar en 09 y tener 10 dígitos</div>
+            @error('telefono') <small class="text-danger">{{ $message }}</small>@enderror
+        </div>
 
-                {{-- Teléfono --}}
-                <div class="col-md-4">
-                    <label for="telefono" class="form-label fw-semibold">Teléfono *</label>
-                    <input type="text" required pattern="09\d{8}" class="form-control @error('telefono') is-invalid @enderror" id="telefono" name="telefono" value="{{ old('telefono', $institucion->telefono) }}">
-                    <div class="form-text">Debe iniciar en 09 y tener 10 dígitos</div>
-                    @error('telefono')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Dirección --}}
+        <div class="form-group mb-3">
+            <label for="direccion">Dirección *</label>
+            <textarea id="direccion" name="direccion" rows="2" required
+                      class="form-control @error('direccion') is-invalid @enderror">{{ old('direccion', $institucion->direccion) }}</textarea>
+            @error('direccion') <small class="text-danger">{{ $message }}</small>@enderror
+        </div>
 
-                {{-- Dirección --}}
-                <div class="col-md-8">
-                    <label for="direccion" class="form-label fw-semibold">Dirección *</label>
-                    <input type="text" required class="form-control @error('direccion') is-invalid @enderror" id="direccion" name="direccion" value="{{ old('direccion', $institucion->direccion) }}">
-                    @error('direccion')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+        {{-- Estado --}}
+        <div class="form-group mb-4">
+            <label for="estado">Estado</label>
+            <select id="estado" name="estado" class="form-control">
+                <option value="1" @selected(old('estado', $institucion->estado)==1)>Activo</option>
+                <option value="0" @selected(old('estado', $institucion->estado)==0)>Inactivo</option>
+            </select>
+        </div>
 
-                {{-- Estado (activo / inactivo) --}}
-                <div class="col-md-4">
-                    <label for="estado" class="form-label fw-semibold">Estado *</label>
-                    <select id="estado" name="estado" class="form-select @error('estado') is-invalid @enderror" required>
-                        <option value="1" {{ old('estado', $institucion->estado) ? 'selected' : '' }}>Activo</option>
-                        <option value="0" {{ old('estado', $institucion->estado) ? '' : 'selected' }}>Inactivo</option>
-                    </select>
-                    @error('estado')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-
-                {{-- Botones --}}
-                <div class="col-12 d-flex justify-content-end gap-2 pt-3 border-top">
-                    <a href="{{ route('instituciones.index') }}" class="btn btn-outline-secondary">
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-save me-1"></i> Guardar cambios
-                    </button>
-                </div>
-            </form>
-
-        </div><!-- /.card-body -->
-    </div><!-- /.card -->
-</div><!-- /.container -->
+        {{-- Botones --}}
+        <button type="submit" class="btn btn-primary">Actualizar institución</button>
+        <a href="{{ route('instituciones.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
 @endsection

@@ -24,7 +24,7 @@ class ObjetivoController extends Controller
     public function create()
     {
         $nextId = Objetivo::max('idObjetivo') + 1;
-        $codigoSiguiente = 'O-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
+        $codigoSiguiente = 'OB-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
 
         return view('objetivos.create', compact('codigoSiguiente'));
     }
@@ -35,10 +35,10 @@ class ObjetivoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'codigo'          => 'nullable|string|max:20|unique:objetivos_estrategicos,codigo',
+            'codigo'          => 'nullable|string|max:20|unique:objetivos,codigo',
             'nombre'          => 'required|string|max:255',
             'descripcion'     => 'nullable|string',
-            'tipo'            => ['required', Rule::in(['INSTITUCIONAL','ODS','PND'])],
+            'tipo'            => ['required', Rule::in(['Institucional','ODS','PND'])],
             'vigencia_desde'  => 'nullable|date',
             'vigencia_hasta'  => 'nullable|date|after_or_equal:vigencia_desde',
             'estado'          => 'boolean',
@@ -52,7 +52,7 @@ class ObjetivoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ObjetivoEstrategico $objetivoEstrategico)
+    public function show(Objetivo $objetivo)
     {
         //
     }
@@ -74,7 +74,7 @@ class ObjetivoController extends Controller
         $objetivo = Objetivo::findOrFail($id);
 
         $request->validate([
-            'codigo'          => ['nullable','string','max:20',Rule::unique('objetivos_estrategicos','codigo')->ignore($objetivo->idObjetivo,'idObjetivo')],
+            'codigo'          => ['nullable','string','max:20',Rule::unique('objetivos','codigo')->ignore($objetivo->idObjetivo,'idObjetivo')],
             'nombre'          => 'required|string|max:255',
             'descripcion'     => 'nullable|string',
             'tipo'            => ['required', Rule::in(['Institucional','ODS','PND'])],

@@ -14,6 +14,7 @@ class Institucion extends Model
     public $incrementing=true;
     protected $keyType='int';
     protected $fillable = [
+        'codigo',
         'nombre',
         'siglas',
         'ruc',

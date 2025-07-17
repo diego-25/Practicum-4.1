@@ -31,6 +31,7 @@
                 <thead class="table-light">
                     <tr>
                         <th scope="col">ID</th>
+                        <th scope="col">Codigo</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Siglas</th>
                         <th scope="col">RUC</th>
@@ -38,7 +39,7 @@
                         <th scope="col">Teléfono</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Estado</th>
-                        <th scope="col" class="text-end">Acciones</th>
+                        <th scope="col" class="text-center">Acciones</th>
                     </tr>
                 </thead>
 
@@ -46,6 +47,7 @@
                     @foreach ($instituciones as $inst)
                         <tr>
                             <td>{{ $inst->idInstitucion }}</td>
+                            <td>{{ $inst->codigo ?? '—' }}</td>
                             <td>{{ $inst->nombre }}</td>
                             <td>{{ $inst->siglas }}</td>
                             <td>{{ $inst->ruc }}</td>
@@ -54,12 +56,12 @@
                             <td>{{ $inst->direccion }}</td>
                             <td>{{ $inst->estado ? 'Activo' : 'Inactivo' }}</td>
 
-                            <td class="text-end">
+                            <td class="text-center">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
                                     {{-- Botón Editar --}}
                                     <a href="{{ route('instituciones.edit', $inst) }}"
                                        class="btn btn-sm btn-outline-secondary me-1">
-                                        <i class="bi bi-pencil-square me-1"></i> Editar
+                                       <i class="bi bi-pencil-square me-1"></i> Editar
                                     </a>
                                     {{-- Botón Eliminar --}}
                                     <form action="{{ route('instituciones.destroy', $inst) }}"

@@ -24,7 +24,7 @@ class InstitucionController extends Controller
     public function create()
     {
         $nextId = Institucion::max('idInstitucion') + 1;
-        $codigoSiguiente = str_pad($nextId, 6, '0', STR_PAD_LEFT);
+        $codigoSiguiente = 'INS-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
         return view('instituciones.create', compact('codigoSiguiente'));
     }
 
@@ -34,13 +34,14 @@ class InstitucionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'siglas'   => 'nullable|string|max:50',
-            'ruc'      => 'required|digits:10|unique:instituciones,ruc',
-            'email'    => 'required|email|max:255',
-            'telefono' => 'required|string|max:10',
-            'direccion'=> 'required|string|max:255',
-            'estado'   => 'boolean'
+            'codigo'=>'nullable|string|max:20|unique:instituciones,codigo',
+            'nombre'=>'required|string|max:255',
+            'siglas'=>'nullable|string|max:50',
+            'ruc'=>'required|digits:10|unique:instituciones,ruc',
+            'email'=>'required|email|max:255',
+            'telefono'=>'required|string|max:10',
+            'direccion'=>'required|string|max:255',
+            'estado'=>'boolean'
         ]);
 
         Institucion::create($request->all());
@@ -71,13 +72,14 @@ class InstitucionController extends Controller
     {
         $institucion = Institucion::findOrfail($id);
         $request->validate([
-            'nombre'   => 'required|string|max:255',
-            'siglas'   => 'nullable|string|max:50',
-            'ruc'      => ['required','digits:10',Rule::unique('instituciones', 'ruc')->ignore($institucion->idInstitucion, 'idInstitucion') ],
-            'email'    => 'required|email|max:255',
-            'telefono' => 'required|string|max:10',
-            'direccion'=> 'required|string|max:255',
-            'estado'   => 'boolean'
+            'codigo'=> ['nullable','string','max:20',Rule::unique('institucion','codigo')->ignore($institucion->idInstitucion,'idInstitucion')],
+            'nombre'=>'required|string|max:255',
+            'siglas'=>'nullable|string|max:50',
+            'ruc'=>['required','digits:10',Rule::unique('instituciones', 'ruc')->ignore($institucion->idInstitucion, 'idInstitucion') ],
+            'email'=>'required|email|max:255',
+            'telefono'=>'required|string|max:10',
+            'direccion'=>'required|string|max:255',
+            'estado'=>'boolean'
         ]);
 
         $institucion->update($request->all());
