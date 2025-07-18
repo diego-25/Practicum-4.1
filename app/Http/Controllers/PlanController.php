@@ -95,4 +95,9 @@ class PlanController extends Controller
         $plan->delete();
         return redirect()->route('planes.index')->with('success','Plan eliminado satisfactoriamente');
     }
+
+    public function ajaxByPrograma(int $programa)
+    {
+        return PlanInstitucional::where('idPrograma', $programa)->orderBy('nombre')->pluck('nombre', 'idPlan');
+    }
 }

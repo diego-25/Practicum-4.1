@@ -17,6 +17,7 @@ class Proyecto extends Model
     /** Asignación masiva */
     protected $fillable = [
         'idPlan',
+        'idPrograma',
         'codigo',
         'nombre',
         'descripcion',
@@ -43,8 +44,17 @@ class Proyecto extends Model
         );
     }
 
-    //Acceso al Programa vía Plan
     public function programa()
+    {
+        return $this->belongsTo(
+            ProgramaInstitucional::class,
+            'idPrograma',
+            'idPrograma'
+        );
+    }
+
+    //Acceso al Programa vía Plan
+    public function getprograma()
     {
         //$proyecto->programa
         return $this->plan ? $this->plan->programa() : null;
@@ -54,5 +64,15 @@ class Proyecto extends Model
     public function objetivo()
     {
         return $this->plan?->programa()?->objetivo();
+    }
+
+    public function getRutaAttribute(): string
+    {
+        $obj  = $this->programa?->objetivo?->codigo ?? 'OBJ';
+        $prog = $this->programa?->codigo ?? 'PRG';
+        $plan = $this->plan?->codigo ?? 'PLN';
+        $proj = $this->codigo ?? 'PRY';
+
+        return "{$obj} › {$prog} › {$plan} › {$proj}";
     }
 }

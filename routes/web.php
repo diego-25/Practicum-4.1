@@ -98,3 +98,11 @@ Route::middleware(['auth', 'role:Control'])->group(function () {
 |--------------------------------------------------------------------------
 */
 require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Ajax
+|--------------------------------------------------------------------------
+*/
+Route::get('ajax/programas/{objetivo}',[ProgramaController::class, 'ajaxByObjetivo'])->name('ajax.programas');
+Route::get('ajax/planes/{programa}',[PlanController    ::class, 'ajaxByPrograma'])->name('ajax.planes');

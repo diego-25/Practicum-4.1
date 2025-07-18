@@ -24,8 +24,7 @@
         {{-- Código autogenerado--}}
         <div class="form-group mb-3">
             <label>Código</label>
-            <input type="text" 
-            class="form-control-plaintext fw-bold" value="{{ $codigoSiguiente }}" readonly>
+            <input type="text" name="codigo" class="form-control-plaintext fw-bold" value="{{ $codigoSiguiente }}" readonly>
         </div>
 
         <div class="form-group mb-3">

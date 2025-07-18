@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Proyectos institucionales')
+@section('title', 'Proyectos')
 
 @section('content')
 <div class="container">
@@ -36,7 +36,7 @@
                         <th>Objetivo</th>
                         <th>Monto</th>
                         <th>Estado</th>
-                        <th style="width:150px;" class="text-center">Acciones</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,21 +65,23 @@
 
                             {{-- ACCIONES --}}
                             <td class="text-center">
-                                <a href="{{ route('proyectos.edit', $proy) }}"
-                                   class="btn btn-sm btn-warning"
-                                   title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-
-                                <form action="{{ route('proyectos.destroy', $proy) }}"
-                                      method="POST" class="d-inline"
-                                      onsubmit="return confirm('¿Eliminar este proyecto?')">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-danger"
-                                            title="Eliminar">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                <div class="btn-group-vertical" role="group" aria-label="Acciones">
+                                    {{-- Botón Editar --}}
+                                    <a href="{{ route('proyectos.edit', $proy) }}"
+                                       class="btn btn-sm btn-outline-secondary me-1">
+                                        <i class="bi bi-pencil-square me-1"></i> Editar
+                                    </a>
+                                    {{-- Botón Eliminar --}}
+                                    <form action="{{ route('proyectos.destroy', $proy) }}"
+                                          method="POST" class="d-inline"
+                                          onsubmit="return confirm('¿Está seguro de eliminar este proyecto?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+                                            <i class="bi bi-trash me-1"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

@@ -98,4 +98,9 @@ class ProgramaController extends Controller
 
         return redirect()->route('programas.index')->with('success', 'Programa eliminado satisfactoriamente');
     }
+
+    public function ajaxByObjetivo(int $objetivo)
+    {
+        return ProgramaInstitucional::where('idObjetivoEstrategico', $objetivo)->orderBy('nombre')->pluck('nombre', 'idPrograma');
+    }
 }

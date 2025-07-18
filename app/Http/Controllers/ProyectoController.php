@@ -27,7 +27,8 @@ class ProyectoController extends Controller
         $codigoSiguiente='PRY-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
 
         $planes = Plan::with('programa')->orderBy('nombre')->get()->mapWithKeys(fn ($plan) => [$plan->idPlan => $plan->nombre . ' — ' . $plan->programa->nombre]);
-        return view('proyectos.create', compact('codigoSiguiente', 'planes'));
+        $objetivos = Objetivo::orderBy('nombre')->pluck('nombre','idObjetivo');
+        return view('proyectos.create', compact('codigoSiguiente', 'planes','objetivos'));
     }
 
     /**
@@ -35,7 +36,7 @@ class ProyectoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $request = $request->validate([
             'idPlan'            => ['required','integer',Rule::exists('planes','idPlan')],
             'codigo'            => 'nullable|string|max:20|unique:proyectos,codigo',
             'nombre'            => 'required|string|max:255',
@@ -46,6 +47,9 @@ class ProyectoController extends Controller
             'estado'            => 'boolean',
         ]);
 
+        $plan=PlanInstitucional::findOrFail($request->idPlan);
+        $request['idPrograma'] = $plan->idPrograma;
+        
         Proyecto::create($request->all());
 
         return redirect()->route('proyectos.index')->with('success', 'Proyecto creado satisfactoriamente');
@@ -89,6 +93,8 @@ class ProyectoController extends Controller
             'estado'=>'boolean',
         ]);
 
+        $plan=PlanInstitucional::findOrFail($request->idPlan);
+        $request['idPrograma'] = $plan->idPrograma;
         $proyecto->update($request->all());
 
         return redirect()->route('proyectos.index')->with('success', 'Proyecto actualizado satisfactoriamente');

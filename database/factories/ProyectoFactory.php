@@ -12,14 +12,14 @@ class ProyectoFactory extends Factory
 
     public function definition(): array
     {
-        $plan = Plan::inRandomOrder()->first()
-                ?? Plan::factory()->create();
+        $plan = Plan::inRandomOrder()->first()?? Plan::factory()->create();
 
         $inicio = $this->faker->dateTimeBetween('-1 year', 'now');
         $fin    = (clone $inicio)->modify('+'.rand(3,18).' months');
 
         return [
             'idPlan'=>$plan->idPlan,
+            'idPrograma' => $plan->idPrograma,
             'codigo'=>'PRY-'. $this->faker->unique()->numerify('######'),
             'nombre'=>$this->faker->sentence(4),
             'descripcion'=>$this->faker->paragraph(2),

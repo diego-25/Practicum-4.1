@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Programa')
+@section('title', 'Nuevo Plan Institucional')
 
 @section('content')
 <div class="container py-4">
 
-    <h1 class="h4 mb-4">Registrar nuevo programa institucional</h1>
+    <h1 class="h4 mb-4">Registrar nuevo plan institucional</h1>
 
     {{-- Alertas de validación --}}
     @if ($errors->any())
@@ -18,35 +18,34 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('programas.store') }}">
+    <form method="POST" action="{{ route('planes.store') }}">
         @csrf
 
-        {{-- Código autogenerado --}}
+        {{-- Código autogenerado (solo lectura) --}}
         <div class="form-group mb-3">
             <label>Código</label>
             <input type="text" name="codigo" class="form-control-plaintext fw-bold" value="{{ $codigoSiguiente }}" readonly>
         </div>
 
-        {{-- Objetivo estratégico --}}
+        {{-- Programa al que pertenece --}}
         <div class="form-group mb-3">
-            <label for="idObjetivo">Objetivo estratégico *</label>
-            <select id="idObjetivo" name="idObjetivo"
-                    class="form-select @error('idObjetivo') is-invalid @enderror" required>
+            <label for="idPrograma">Programa institucional *</label>
+            <select id="idPrograma" name="idPrograma"
+                    class="form-select @error('idPrograma') is-invalid @enderror" required>
                 <option value="" disabled selected>— Seleccione —</option>
-                @foreach ($objetivos as $id => $nombre)
-                    <option value="{{ $id }}" @selected(old('idObjetivo') == $id)>
+                @foreach ($programas as $id => $nombre)
+                    <option value="{{ $id }}" @selected(old('idPrograma') == $id)>
                         {{ $nombre }}
                     </option>
                 @endforeach
             </select>
-            @error('idObjetivo') <small class="text-danger">{{ $message }}</small> @enderror
+            @error('idPrograma') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
 
         {{-- Nombre --}}
         <div class="form-group mb-3">
             <label for="nombre">Nombre *</label>
-            <input id="nombre" name="nombre" type="text" required
-                   value="{{ old('nombre') }}"
+            <input id="nombre" name="nombre" type="text" required value="{{ old('nombre') }}"
                    class="form-control @error('nombre') is-invalid @enderror">
             @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -80,14 +79,14 @@
         <div class="form-group mb-4">
             <label for="estado">Estado</label>
             <select id="estado" name="estado" class="form-select">
-                <option value="1" @selected(old('estado', 1)==1)>Activo</option>
+                <option value="1" @selected(old('estado',1)==1)>Activo</option>
                 <option value="0" @selected(old('estado')==='0')>Inactivo</option>
             </select>
         </div>
 
         {{-- Botones --}}
-        <button type="submit" class="btn btn-primary">Guardar programa</button>
-        <a href="{{ route('programas.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Guardar plan</button>
+        <a href="{{ route('planes.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
 </div>
 @endsection

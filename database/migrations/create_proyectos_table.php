@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proyectos', function (Blueprint $table) {
+            //PK
             $table->mediumIncrements('idProyecto');
+            //FK
             $table->unsignedMediumInteger('idPlan');
+            $table->unsignedMediumInteger('idPrograma');
+            //Atributos
             $table->string('codigo', 20)->nullable()->unique();
             $table->string('nombre', 255);
             $table->text('descripcion')->nullable();
@@ -22,7 +26,11 @@ return new class extends Migration
             $table->date('fecha_fin')->nullable();
             $table->boolean('estado')->default(true);
             $table->timestamps();
+            //foraneas
             $table->foreign('idPlan')->references('idPlan')->on('planes')->onDelete('cascade');
+            $table->foreign('idPrograma')->references('idPrograma')->on('programas')->onDelete('cascade');
+            //indice compuesto
+            $table->index(['idPlan', 'idPrograma'],'idx_plan_programa');
         });
     }
 
@@ -32,5 +40,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('proyectos');
+        Schema::table('proyectos', function (Blueprint $table) {
+            $table->dropForeign(['idPlan']);
+            $table->dropForeign(['idPrograma']);
+            $table->dropIndex('idx_plan_programa');
+        });
     }
 };
