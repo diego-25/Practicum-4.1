@@ -28,21 +28,35 @@
             <input type="text" class="form-control-plaintext fw-bold" value="{{ $plan->codigo ?? 'PL-' . str_pad($plan->idPlan, 6, '0', STR_PAD_LEFT) }}" readonly>
         </div>
 
-        {{-- Programa al que pertenece --}}
-        <div class="form-group mb-3">
-            <label for="idPrograma">Programa institucional *</label>
-            <select id="idPrograma" name="idPrograma"
-                    class="form-select @error('idPrograma') is-invalid @enderror"
-                    required>
+        {{-- Objetivo --}}
+        <div class="form-group mb-3>
+            <label class="form-label" for="idObjetivo">Objetivo estratégico *</label>
+            <select id="idObjetivo" name="idObjetivo" class="form-select"
+                    data-programa-route="{{ url('/ajax/objetivos/:id/programas') }}" required>
                 <option disabled>— Seleccione —</option>
-                @foreach($programas as $id => $nombre)
+                @foreach ($objetivos as $id => $txt)
                     <option value="{{ $id }}"
-                        @selected(old('idPrograma', $plan->idPrograma) == $id)>
-                        {{ $nombre }}
+                        @selected(old('idObjetivo', $plan->programa->idObjetivo) == $id)>
+                        {{ $txt }}
                     </option>
                 @endforeach
             </select>
-            @error('idPrograma') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        {{-- Programa --}}
+        <div class="form-group mb-3">
+            <label class="form-label" for="idPrograma">Programa institucional *</label>
+            <select id="idPrograma" name="idPrograma" class="form-select"
+                    data-plan-route="{{ url('/ajax/programas/:id/planes') }}"
+                    data-old="{{ old('idPlan', $plan->idPlan) }}" required>
+                <option disabled>— Seleccione —</option>
+                @foreach ($programas as $id => $txt)
+                    <option value="{{ $id }}"
+                        @selected(old('idPrograma', $plan->idPrograma) == $id)>
+                        {{ $txt }}
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         {{-- Nombre --}}
@@ -95,3 +109,38 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+
+    function loadChildren($parent, attr, $child) {
+        const id  = $parent.val();
+        if (!id) {
+            $child.html('<option disabled selected>— Seleccione —</option>').trigger('change');
+            return;
+        }
+
+        const url = $parent.data(attr).replace(':id', id);
+        $.getJSON(url, function (items) {
+            let opts = '<option disabled selected>— Seleccione —</option>';
+            $.each(items, (_, it) => opts += `<option value="${it.value}">${it.text}</option>`);
+            $child.html(opts);
+
+            const oldVal = $child.data('old');
+            if (oldVal) { $child.val(oldVal).data('old', null); }
+            $child.trigger('change');
+        });
+    }
+
+    $('#idObjetivo').on('change', function () {
+        loadChildren($(this), 'programa-route', $('#idPrograma'));
+    });
+
+    $('#idPrograma').on('change', function () {
+        loadChildren($(this), 'plan-route', $('#idPlan'));
+    });
+});
+</script>
+@endpush

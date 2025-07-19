@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Proyecto Institucional')
+@section('title', 'Editar Proyecto')
 
 @section('content')
 <div class="container py-4">
 
-    <h1 class="h4 mb-4">Editar proyecto institucional</h1>
+    <h1 class="h4 mb-4">Editar proyecto</h1>
 
     {{-- Alertas de validación --}}
     @if ($errors->any())
@@ -31,11 +31,48 @@
                    readonly>
         </div>
 
+        {{-- Objetivo --}}
+        <div class="form-group mb-3">
+            <label for="idObjetivo" class="form-label">Objetivo estratégico *</label>
+            <select id="idObjetivo" name="idObjetivo" required
+                    class="form-select @error('idObjetivo') is-invalid @enderror"
+                    data-programa-route="{{ url('/ajax/objetivos/:id/programas') }}">
+                <option disabled>— Seleccione —</option>
+                @foreach ($objetivos as $id => $texto)
+                    <option value="{{ $id }}"
+                        @selected(old('idObjetivo', $proyecto->plan->programa->idObjetivo) == $id)>
+                        {{ $texto }}
+                    </option>
+                @endforeach
+            </select>
+            @error('idObjetivo') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
+
+        {{-- Programa --}}
+        <div class="form-group mb-3">
+            <label for="idPrograma" class="form-label">Programa institucional *</label>
+            <select id="idPrograma" name="idPrograma" required
+                    class="form-select @error('idPrograma') is-invalid @enderror"
+                    data-plan-route="{{ url('/ajax/programas/:id/planes') }}"
+                    data-old="{{ old('idPlan', $proyecto->idPlan) }}">
+                <option disabled>— Seleccione —</option>
+                @foreach ($programas as $id => $texto)
+                    <option value="{{ $id }}"
+                        @selected(old('idPrograma', $proyecto->idPrograma) == $id)>
+                        {{ $texto }}
+                    </option>
+                @endforeach
+            </select>
+            @error('idPrograma') <div class="invalid-feedback">{{ $message }}</div> @enderror
+        </div>
+
         {{-- Plan --}}
         <div class="form-group mb-3">
             <label for="idPlan">Plan institucional *</label>
+
             <select id="idPlan" name="idPlan"
-                    class="form-select @error('idPlan') is-invalid @enderror" required>
+                    class="form-select @error('idPlan') is-invalid @enderror"
+                    required>
                 <option disabled>— Seleccione —</option>
                 @foreach ($planes as $id => $texto)
                     <option value="{{ $id }}"
@@ -101,52 +138,9 @@
             </select>
         </div>
 
-        {{-- Objetivo --}}
-        <select id="idObjetivo" name="idObjetivo" class="form-select" required data-route="{{ route('ajax.programas', ':id') }}">
-            {{-- opciones objetivos --}}
-        </select>
-
-        {{-- Programa (relleno automático) --}}
-        <select id="idPrograma" name="idPrograma" class="form-select mt-3" data-route="{{ route('ajax.planes', ':id') }}">
-            <option disabled selected>— Seleccione —</option>
-        </select>
-
-        {{-- Plan (relleno automático) --}}
-        <select id="idPlan" name="idPlan" class="form-select mt-3"> 
-            <option disabled selected>— Seleccione —</option>
-        </select>
-
         {{-- Botones --}}
         <button type="submit" class="btn btn-primary">Actualizar proyecto</button>
         <a href="{{ route('proyectos.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-$(function () {
-    // 1. Objetivo  --->  Programas
-    $('#idObjetivo').on('change', function () {
-        const objetivoId=$(this).val();
-        const url= $(this).data('route');   // lo pasamos desde Blade
-
-        $.getJSON(url.replace(':id', objetivoId), function (data) {
-            const $prog=$('#idPrograma').empty().append('<option disabled selected>— Seleccione —</option>');
-            $.each(data, (id, texto) => $prog.append(`<option value="${id}">${texto}</option>`)).trigger('change');
-        });
-    });
-
-    // 2. Programa  --->  Planes
-    $('#idPrograma').on('change', function () {
-        const programaId=$(this).val();
-        const url=$(this).data('route');
-
-        $.getJSON(url.replace(':id', programaId), function (data) {
-            const $plan = $('#idPlan').empty().append('<option disabled selected>— Seleccione —</option>');
-            $.each(data, (id, texto) => $plan.append(`<option value="${id}">${texto}</option>`));
-        });
-    });
-});
-</script>
-@endpush

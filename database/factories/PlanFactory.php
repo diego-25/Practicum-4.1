@@ -20,7 +20,7 @@ class PlanFactory extends Factory
         $hasta = (clone $desde)->modify('+'.rand(1,3).' years');
 
         return [
-            'idPrograma'=>$programa->idPrograma,
+            'idPrograma' => Programa::inRandomOrder()->value('idPrograma')?? Programa::factory(),
             'codigo'=>'PL-'. $this->faker->unique()->numerify('######'),
             'nombre'=>$this->faker->sentence(4),
             'descripcion'=>$this->faker->paragraph(),

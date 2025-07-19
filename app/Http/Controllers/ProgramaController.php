@@ -99,8 +99,10 @@ class ProgramaController extends Controller
         return redirect()->route('programas.index')->with('success', 'Programa eliminado satisfactoriamente');
     }
 
-    public function byPrograma(\App\Models\Programa $programa): \Illuminate\Http\JsonResponse
+    public function byObjetivo(Objetivo $objetivo)
     {
-        return response()->json($programa->planes()->select('id', 'nombre')->orderBy('nombre')->get());
+        return response()->json(
+            $objetivo->programas()->select('idPrograma as value', 'nombre as text')->orderBy('nombre')->get()
+        );
     }
 }

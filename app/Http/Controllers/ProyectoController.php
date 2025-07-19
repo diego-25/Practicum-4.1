@@ -79,7 +79,7 @@ class ProyectoController extends Controller
         $programas = Programa::where('idObjetivo', $proyecto->plan->programa->idObjetivo)->orderBy('nombre')->pluck('nombre', 'idPrograma');
         $planes    = Plan::where('idPrograma', $proyecto->idPrograma)->orderBy('nombre')->pluck('nombre', 'idPlan');
 
-        return view('proyectos.edit', compact('proyecto', 'planes',´objetivos´));
+        return view('proyectos.edit', compact('proyecto', 'planes', 'programas', 'objetivos'));
     }
 
     /**
@@ -87,6 +87,7 @@ class ProyectoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $proyecto=Proyecto::findOrFail($id);
         $request->validate([
             'idPlan'=>['required','integer',Rule::exists('planes','idPlan')],
             'codigo'=>['nullable','string','max:20',Rule::unique('proyectos','codigo')->ignore($proyecto->idProyecto,'idProyecto')],
@@ -98,7 +99,6 @@ class ProyectoController extends Controller
             'estado'=>'boolean',
         ]);
 
-        $proyecto=Proyecto::findOrFail($id);
         $plan=Plan::findOrFail($request->idPlan);
         $request['idPrograma'] = $plan->idPrograma;
         $proyecto->update($request->all());
@@ -114,19 +114,5 @@ class ProyectoController extends Controller
         $proyecto = Proyecto::findOrFail($id);
         $proyecto->delete();
         return redirect()->route('proyectos.index')->with('success', 'Proyecto eliminado satisfactoriamente');
-    }
-
-    public function ajaxProgramas(int $objetivoId)
-    {
-        $data = Programa::where('idObjetivo', $objetivoId)->orderBy('nombre')->get(['idPrograma as value', 'nombre as text']);
-
-        return response()->json($data);
-    }
-
-    public function ajaxPlanes(int $programaId)
-    {
-        $data = Plan::where('idPrograma', $programaId)->orderBy('nombre')->get(['idPlan as value', 'nombre as text']);
-
-        return response()->json($data);
     }
 }

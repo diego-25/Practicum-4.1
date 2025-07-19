@@ -6,6 +6,7 @@ use App\Models\Plan;
 use Illuminate\Http\Request;
 use App\Models\Programa;
 use Illuminate\Validation\Rule;
+use App\Models\Objetivo;
 
 class PlanController extends Controller
 {
@@ -23,10 +24,14 @@ class PlanController extends Controller
      */
     public function create()
     {
-        $nextId         = Plan::max('idPlan') + 1;
+        $nextId = Plan::max('idPlan') + 1;
         $codigoSiguiente = 'PL-' . str_pad($nextId, 6, '0', STR_PAD_LEFT);
         $programas = Programa::orderBy('nombre')->pluck('nombre','idPrograma');
-        return view('planes.create', compact('codigoSiguiente','programas'));
+
+        //ajax
+        $objetivos = Objetivo::orderBy('nombre')->pluck('nombre', 'idObjetivo');
+
+        return view('planes.create', compact('codigoSiguiente','programas','objetivos'));
     }
 
     /**
@@ -63,7 +68,11 @@ class PlanController extends Controller
     {
         $plan = Plan::findOrFail($id);
         $programas = Programa::orderBy('nombre')->pluck('nombre','idPrograma');
-        return view('planes.edit', compact('plan','programas'));
+
+        //ajax
+        $objetivos = Objetivo::orderBy('nombre')->pluck('nombre', 'idObjetivo');
+
+        return view('planes.edit', compact('plan','programas','objetivos'));
     }
 
     /**
@@ -96,8 +105,10 @@ class PlanController extends Controller
         return redirect()->route('planes.index')->with('success','Plan eliminado satisfactoriamente');
     }
 
-    public function ajaxByPrograma(int $programa)
+    public function byPrograma(Programa $programa)
     {
-        return PlanInstitucional::where('idPrograma', $programa)->orderBy('nombre')->pluck('nombre', 'idPlan');
+        return response()->json(
+            $programa->planes()->select('idPlan as value', 'nombre as text')->orderBy('nombre')->get()
+        );
     }
 }

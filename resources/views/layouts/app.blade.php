@@ -7,6 +7,8 @@
     {{-- CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @vite(['resources/js/app.js'])
+
     {{-- Título --}}
     <title>Sistema Integrado de Planificación e Inversión Pública - SIPeIP - @yield('title')</title>
 
@@ -17,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" defer></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -57,10 +59,12 @@
             text-align: center;
         }
     </style>
-
+    
 </head>
 
-<body>
+{{-- @stack('scripts') --}}
+
+<body data-old="{{ count(session()->getOldInput()) ? 1 : 0 }}">
     <header>
            <h1>Sistema Integrado de Planificación e Inversión Pública</h1> 
     </header>
