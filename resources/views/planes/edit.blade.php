@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Plan Institucional')
+@section('title', 'Editar Plan')
 
 @section('content')
 <div class="container py-4">
 
-    <h1 class="h4 mb-4">Editar plan institucional</h1>
+    <h1 class="h4 mb-4">Editar plan</h1>
 
     {{-- Alertas de validación --}}
     @if ($errors->any())
@@ -34,10 +34,9 @@
             <select id="idObjetivo" name="idObjetivo" class="form-select"
                     data-programa-route="{{ url('/ajax/objetivos/:id/programas') }}" required>
                 <option disabled>— Seleccione —</option>
-                @foreach ($objetivos as $id => $txt)
-                    <option value="{{ $id }}"
-                        @selected(old('idObjetivo', $plan->programa->idObjetivo) == $id)>
-                        {{ $txt }}
+                @foreach ($objetivos as $id => $texto)
+                    <option value="{{ $id }}" @selected(old('idObjetivo', $plan->programa->idObjetivo) == $id)>
+                        {{ $texto }}
                     </option>
                 @endforeach
             </select>
@@ -50,10 +49,10 @@
                     data-plan-route="{{ url('/ajax/programas/:id/planes') }}"
                     data-old="{{ old('idPlan', $plan->idPlan) }}" required>
                 <option disabled>— Seleccione —</option>
-                @foreach ($programas as $id => $txt)
+                @foreach ($programas as $id => $texto)
                     <option value="{{ $id }}"
                         @selected(old('idPrograma', $plan->idPrograma) == $id)>
-                        {{ $txt }}
+                        {{ $texto }}
                     </option>
                 @endforeach
             </select>

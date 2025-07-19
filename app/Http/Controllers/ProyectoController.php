@@ -32,9 +32,9 @@ class ProyectoController extends Controller
 
         //ajax
         $objetivos = Objetivo::orderBy('nombre')->pluck('nombre', 'idObjetivo');
-
+        $programas = Programa::with('objetivo')->orderBy('nombre')->get()->mapWithKeys(fn ($programa) => [$programa->idPrograma => $programa->nombre . ' — ' . $programa->objetivo->nombre]);
         $planes = Plan::with('programa')->orderBy('nombre')->get()->mapWithKeys(fn ($plan) => [$plan->idPlan => $plan->nombre . ' — ' . $plan->programa->nombre]);
-        return view('proyectos.create', compact('codigoSiguiente', 'planes','objetivos'));
+        return view('proyectos.create', compact('codigoSiguiente', 'planes','objetivos', 'programas'));
     }
 
     /**

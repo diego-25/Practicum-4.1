@@ -7,8 +7,6 @@
     {{-- CSRF --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @vite(['resources/js/app.js'])
-
     {{-- Título --}}
     <title>Sistema Integrado de Planificación e Inversión Pública - SIPeIP - @yield('title')</title>
 
@@ -62,7 +60,7 @@
     
 </head>
 
-{{-- @stack('scripts') --}}
+@stack('scripts')
 
 <body data-old="{{ count(session()->getOldInput()) ? 1 : 0 }}">
     <header>

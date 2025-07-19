@@ -34,8 +34,7 @@
         {{-- Objetivo --}}
         <div class="form-group mb-3">
             <label for="idObjetivo" class="form-label">Objetivo estratégico *</label>
-            <select id="idObjetivo" name="idObjetivo" required
-                    class="form-select @error('idObjetivo') is-invalid @enderror"
+            <select id="idObjetivo" name="idObjetivo" required class="form-select @error('idObjetivo') is-invalid @enderror"
                     data-programa-route="{{ url('/ajax/objetivos/:id/programas') }}">
                 <option disabled>— Seleccione —</option>
                 @foreach ($objetivos as $id => $texto)
@@ -51,14 +50,11 @@
         {{-- Programa --}}
         <div class="form-group mb-3">
             <label for="idPrograma" class="form-label">Programa institucional *</label>
-            <select id="idPrograma" name="idPrograma" required
-                    class="form-select @error('idPrograma') is-invalid @enderror"
-                    data-plan-route="{{ url('/ajax/programas/:id/planes') }}"
-                    data-old="{{ old('idPlan', $proyecto->idPlan) }}">
+            <select id="idPrograma" name="idPrograma" required class="form-select @error('idPrograma') is-invalid @enderror"
+                    data-plan-route="{{ url('/ajax/programas/:id/planes') }}" data-old="{{ old('idPlan', $proyecto->idPlan) }}">
                 <option disabled>— Seleccione —</option>
                 @foreach ($programas as $id => $texto)
-                    <option value="{{ $id }}"
-                        @selected(old('idPrograma', $proyecto->idPrograma) == $id)>
+                    <option value="{{ $id }}" @selected(old('idPrograma', $proyecto->idPrograma) == $id)>
                         {{ $texto }}
                     </option>
                 @endforeach
@@ -69,14 +65,10 @@
         {{-- Plan --}}
         <div class="form-group mb-3">
             <label for="idPlan">Plan institucional *</label>
-
-            <select id="idPlan" name="idPlan"
-                    class="form-select @error('idPlan') is-invalid @enderror"
-                    required>
+            <select id="idPlan" name="idPlan" class="form-select @error('idPlan') is-invalid @enderror" equired>
                 <option disabled>— Seleccione —</option>
                 @foreach ($planes as $id => $texto)
-                    <option value="{{ $id }}"
-                        @selected(old('idPlan', $proyecto->idPlan) == $id)>
+                    <option value="{{ $id }}" @selected(old('idPlan', $proyecto->idPlan) == $id)> 
                         {{ $texto }}
                     </option>
                 @endforeach
@@ -87,8 +79,7 @@
         {{-- Nombre --}}
         <div class="form-group mb-3">
             <label for="nombre">Nombre *</label>
-            <input id="nombre" name="nombre" type="text" required
-                   value="{{ old('nombre', $proyecto->nombre) }}"
+            <input id="nombre" name="nombre" type="text" required value="{{ old('nombre', $proyecto->nombre) }}"
                    class="form-control @error('nombre') is-invalid @enderror">
             @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -96,7 +87,7 @@
         {{-- Descripción --}}
         <div class="form-group mb-3">
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3"
+            <textarea id="descripcion" name="descripcion" rows="3" 
                       class="form-control @error('descripcion') is-invalid @enderror">{{ old('descripcion', $proyecto->descripcion) }}</textarea>
             @error('descripcion') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -144,3 +135,38 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+
+    function loadChildren($parent, attr, $child) {
+        const id  = $parent.val();
+        if (!id) {
+            $child.html('<option disabled selected>— Seleccione —</option>').trigger('change');
+            return;
+        }
+
+        const url = $parent.data(attr).replace(':id', id);
+        $.getJSON(url, function (items) {
+            let opts = '<option disabled selected>— Seleccione —</option>';
+            $.each(items, (_, it) => opts += `<option value="${it.value}">${it.text}</option>`);
+            $child.html(opts);
+
+            const oldVal = $child.data('old');
+            if (oldVal) { $child.val(oldVal).data('old', null); }
+            $child.trigger('change');
+        });
+    }
+
+    $('#idObjetivo').on('change', function () {
+        loadChildren($(this), 'programa-route', $('#idPrograma'));
+    });
+
+    $('#idPrograma').on('change', function () {
+        loadChildren($(this), 'plan-route', $('#idPlan'));
+    });
+});
+</script>
+@endpush

@@ -61,8 +61,7 @@
         {{-- Nombre --}}
         <div class="form-group mb-3">
             <label for="nombre">Nombre *</label>
-            <input id="nombre" name="nombre" type="text" required
-                   value="{{ old('nombre') }}"
+            <input id="nombre" name="nombre" type="text" required value="{{ old('nombre') }}"
                    class="form-control @error('nombre') is-invalid @enderror">
             @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -118,3 +117,48 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+
+    /** función genérica para cargar hijos **/
+    function loadChildren($parent, routeAttr, $child) {
+        const id   = $parent.val();
+        const tmpl = $parent.data(routeAttr);   // ej: "/ajax/objetivos/:id/programas"
+        if (!id || !tmpl) {
+            $child.html('<option value="">-- Seleccione --</option>').trigger('change');
+            return;
+        }
+
+        $.getJSON(tmpl.replace(':id', id), function (items) {
+            let options = '<option value="">-- Seleccione --</option>';
+            $.each(items, (_, it) => options += `<option value="${it.value}">${it.text}</option>`);
+            $child.html(options);
+
+            // seleccionar valor previo (cuando vuelve de error 422)
+            const old = $child.data('old');
+            if (old) { $child.val(old).data('old', null); }
+
+            $child.trigger('change'); // encadena al siguiente nivel
+        });
+    }
+
+    // cascada Objetivo → Programa
+    $('#idObjetivo').on('change', function () {
+        loadChildren($(this), 'programa-route', $('#idPrograma'));
+    });
+
+    // cascada Programa → Plan
+    $('#idPrograma').on('change', function () {
+        loadChildren($(this), 'plan-route', $('#idPlan'));
+    });
+
+    // si había valores antiguos (error de validación) disparamos al inicio
+    if ($('#idObjetivo').val()) {
+        $('#idObjetivo').trigger('change');
+    }
+});
+</script>
+@endpush

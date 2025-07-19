@@ -36,12 +36,10 @@
         {{-- Objetivo estratégico --}}
         <div class="form-group mb-3">
             <label for="idObjetivo">Objetivo estratégico *</label>
-            <select id="idObjetivo" name="idObjetivo"
-                    class="form-select @error('idObjetivo') is-invalid @enderror" required>
+            <select id="idObjetivo" name="idObjetivo" class="form-select @error('idObjetivo') is-invalid @enderror" required>
                 <option disabled>— Seleccione —</option>
                 @foreach ($objetivos as $id => $nombre)
-                    <option value="{{ $id }}"
-                        @selected(old('idObjetivo', $programa->idObjetivoEstrategico) == $id)>
+                    <option value="{{ $id }}" @selected(old('idObjetivo', $programa->idObjetivoEstrategico) == $id)>
                         {{ $nombre }}
                     </option>
                 @endforeach
@@ -52,8 +50,7 @@
         {{-- Nombre --}}
         <div class="form-group mb-3">
             <label for="nombre">Nombre *</label>
-            <input id="nombre" name="nombre" type="text" required
-                   value="{{ old('nombre', $programa->nombre) }}"
+            <input id="nombre" name="nombre" type="text" required alue="{{ old('nombre', $programa->nombre) }}"
                    class="form-control @error('nombre') is-invalid @enderror">
             @error('nombre') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
