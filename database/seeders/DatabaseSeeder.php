@@ -50,9 +50,9 @@ class DatabaseSeeder extends Seeder
         // clases de demo
         Institucion::factory(10)->create();
         User::factory(5)->create();
-        Objetivo::factory(50)->create();
-        Programa::factory(5)->create();
-        Plan::factory(5)->create();
-        Proyecto::factory(5)->create();
+        Objetivo::factory(5)->create();
+        Programa::factory(25)->create();
+        Plan::factory(50)->create();
+        Proyecto::factory(100)->create();
     }
 }

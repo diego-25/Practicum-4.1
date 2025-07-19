@@ -98,4 +98,9 @@ class ObjetivoController extends Controller
         $objetivo->delete();
         return redirect()->route('objetivos.index')->with('success', 'Objetivo eliminado satisfactoriamente');
     }
+
+    public function ByObjetivo(int $objetivo)
+    {
+        return response()->json($objetivo->programas()->select('id', 'nombre')->orderBy('nombre')->get());
+    }
 }

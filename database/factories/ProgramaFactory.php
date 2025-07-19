@@ -12,15 +12,13 @@ class ProgramaFactory extends Factory
 
     public function definition(): array
     {
-        // obtiene o crea un objetivo al azar
-        $objetivo = Objetivo::inRandomOrder()->first()?? Objetivo::factory()->create();
 
         // vigencia lógica
         $desde = $this->faker->dateTimeBetween('-3 years', 'now');
         $hasta = (clone $desde)->modify('+'.rand(1,3).' years');
 
         return [
-            'idObjetivo' => $objetivo->idObjetivo,
+            'idObjetivo' => Objetivo::inRandomOrder()->value('idObjetivo')?? Objetivo::factory(),
             'codigo'=>'PR-'. $this->faker->unique()->numerify('######'),
             'nombre'=>$this->faker->sentence(4),
             'descripcion'=>$this->faker->paragraph(),

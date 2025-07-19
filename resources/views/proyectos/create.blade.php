@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Proyecto Institucional')
+@section('title', 'Nuevo Proyecto')
 
 @section('content')
 <div class="container py-4">
 
-    <h1 class="h4 mb-4">Registrar nuevo proyecto institucional</h1>
+    <h1 class="h4 mb-4">Registrar nuevo proyecto</h1>
 
     {{-- Alertas de validación --}}
     @if ($errors->any())
@@ -43,6 +43,39 @@
                 Muestra: Plan — Programa
             </small>
             @error('idPlan') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        {{-- Selects dependientes --}}
+        <div class="row g-3">
+
+            {{-- Objetivo --}}
+            <div class="col-md-4">
+                <label for="idObjetivo" class="form-label">Objetivo</label>
+                <select id="idObjetivo" name="idObjetivo" class="form-select" data-programa-route="{{ url('ajax/objetivos/:id/programas') }}" required>
+                    <option value="">-- Seleccione Objetivo --</option>
+                    @foreach ($objetivos as $id => $nombre)
+                        <option value="{{ $id }}" @selected(old('idObjetivo') == $id)>{{ $nombre }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Programa --}}
+            <div class="col-md-4">
+                <label for="idPrograma" class="form-label">Programa</label>
+                <select id="idPrograma" name="idPrograma" class="form-select" data-plan-route="{{ url('ajax/programas/:id/planes') }}" 
+                data-old="{{ old('idPrograma') }}" required>
+                    <option value="">-- Seleccione Programa --</option>
+                </select>
+            </div>
+
+            {{-- Plan --}}
+            <div class="col-md-4">
+                <label for="idPlan" class="form-label">Plan</label>
+                <select id="idPlan" name="idPlan" class="form-select" data-old="{{ old('idPlan') }}" required>
+                    <option value="">-- Seleccione Plan --</option>
+                </select>
+            </div>
+
         </div>
 
         {{-- Nombre --}}
@@ -99,24 +132,6 @@
             </select>
         </div>
 
-        {{-- Objetivo --}}
-        <select id="idObjetivo" name="idObjetivo" class="form-select" required data-route="{{ route('ajax.programas', ':id') }}">
-            <option disabled selected>— Seleccione —</option>
-            @foreach($objetivos as $id => $nombre)
-                <option value="{{ $id }}" @selected(old('idObjetivo') == $id)>{{ $nombre }}</option>
-            @endforeach
-        </select>
-
-        {{-- Programa (relleno automático) --}}
-        <select id="idPrograma" name="idPrograma" class="form-select mt-3" data-route="{{ route('ajax.planes', ':id') }}">
-            <option disabled selected>— Seleccione —</option>
-        </select>
-
-        {{-- Plan (relleno automático) --}}
-        <select id="idPlan" name="idPlan" class="form-select mt-3"> 
-            <option disabled selected>— Seleccione —</option>
-        </select>
-
         {{-- Botones --}}
         <button type="submit" class="btn btn-primary">Guardar proyecto</button>
         <a href="{{ route('proyectos.index') }}" class="btn btn-secondary ms-2">Cancelar</a>
@@ -125,29 +140,46 @@
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 $(function () {
-    // 1. Objetivo  --->  Programas
+
+    /** función genérica para cargar hijos **/
+    function loadChildren($parent, routeAttr, $child) {
+        const id   = $parent.val();
+        const tmpl = $parent.data(routeAttr);   // ej: "/ajax/objetivos/:id/programas"
+        if (!id || !tmpl) {
+            $child.html('<option value="">-- Seleccione --</option>').trigger('change');
+            return;
+        }
+
+        $.getJSON(tmpl.replace(':id', id), function (items) {
+            let options = '<option value="">-- Seleccione --</option>';
+            $.each(items, (_, it) => options += `<option value="${it.value}">${it.text}</option>`);
+            $child.html(options);
+
+            // seleccionar valor previo (cuando vuelve de error 422)
+            const old = $child.data('old');
+            if (old) { $child.val(old).data('old', null); }
+
+            $child.trigger('change'); // encadena al siguiente nivel
+        });
+    }
+
+    // cascada Objetivo → Programa
     $('#idObjetivo').on('change', function () {
-        const objetivoId=$(this).val();
-        const url= $(this).data('route');   // lo pasamos desde Blade
-
-        $.getJSON(url.replace(':id', objetivoId), function (data) {
-            const $prog=$('#idPrograma').empty().append('<option disabled selected>— Seleccione —</option>');
-            $.each(data, (id, texto) => $prog.append(`<option value="${id}">${texto}</option>`)).trigger('change');
-        });
+        loadChildren($(this), 'programa-route', $('#idPrograma'));
     });
 
-    // 2. Programa  --->  Planes
+    // cascada Programa → Plan
     $('#idPrograma').on('change', function () {
-        const programaId=$(this).val();
-        const url=$(this).data('route');
-
-        $.getJSON(url.replace(':id', programaId), function (data) {
-            const $plan = $('#idPlan').empty().append('<option disabled selected>— Seleccione —</option>');
-            $.each(data, (id, texto) => $plan.append(`<option value="${id}">${texto}</option>`));
-        });
+        loadChildren($(this), 'plan-route', $('#idPlan'));
     });
+
+    // si había valores antiguos (error de validación) disparamos al inicio
+    if ($('#idObjetivo').val()) {
+        $('#idObjetivo').trigger('change');
+    }
 });
 </script>
 @endpush

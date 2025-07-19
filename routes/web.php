@@ -104,5 +104,12 @@ require __DIR__.'/auth.php';
 | Ajax
 |--------------------------------------------------------------------------
 */
-Route::get('ajax/programas/{objetivo}',[ProgramaController::class, 'ajaxByObjetivo'])->name('ajax.programas');
-Route::get('ajax/planes/{programa}',[PlanController    ::class, 'ajaxByPrograma'])->name('ajax.planes');
+Route::prefix('ajax')->middleware('auth')->group(function () {
+    Route::get('/objetivos/{objetivo}/programas',
+        [ProgramaController::class, 'byObjetivo']
+    )->name('ajax.objetivos.programas');   // ← ESTE ES EL NOMBRE CORRECTO
+
+    Route::get('/programas/{programa}/planes',
+        [PlanController::class, 'byPrograma']
+    )->name('ajax.programas.planes');       // ← Y ESTE TAMBIÉN
+});
