@@ -66,6 +66,11 @@
                             {{-- ACCIONES --}}
                             <td class="text-center">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
+                                    {{-- Botón Ver --}}
+                                    <a href="{{ route('proyectos.show', $proy) }}"
+                                       class="btn btn-sm btn-outline-secondary me-1">
+                                        <i class="bi bi-pencil-square me-1"></i> Ver
+                                    </a>
                                     {{-- Botón Editar --}}
                                     <a href="{{ route('proyectos.edit', $proy) }}"
                                        class="btn btn-sm btn-outline-secondary me-1">
@@ -77,7 +82,7 @@
                                           onsubmit="return confirm('¿Está seguro de eliminar este proyecto?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+                                        <button type="submit" class="btn btn-sm btn-danger w-100 rounded-0 border-top-0">
                                             <i class="bi bi-trash me-1"></i> Eliminar
                                         </button>
                                     </form>
@@ -94,8 +99,8 @@
         </div>
 
         {{-- PAGINACIÓN --}}
-        <div class="card-footer">
-            {{ $proyectos->links() }}
+        <div class="mt-3">
+            {{ $proyectos->links('pagination::bootstrap-5') }}
         </div>
     </div>
 

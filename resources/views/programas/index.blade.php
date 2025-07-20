@@ -62,9 +62,14 @@
 
                             <td class="text-center">
                                 <div class="btn-group-vertical" role="group" aria-label="Acciones">
+                                    {{-- Botón Ver --}}
+                                    <a href="{{ route('programas.show', $prog) }}"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-pencil-square me-1"></i> Ver
+                                    </a>
                                     {{-- Botón Editar --}}
                                     <a href="{{ route('programas.edit', $prog) }}"
-                                       class="btn btn-sm btn-outline-secondary me-1">
+                                       class="btn btn-sm btn-outline-secondary">
                                         <i class="bi bi-pencil-square me-1"></i> Editar
                                     </a>
                                     {{-- Botón Eliminar --}}
@@ -73,7 +78,7 @@
                                           onsubmit="return confirm('¿Está seguro de eliminar este programa?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger mt-2">
+                                        <button type="submit" class="btn btn-sm btn-danger w-100 rounded-0 border-top-0">
                                             <i class="bi bi-trash me-1"></i> Eliminar
                                         </button>
                                     </form>
@@ -89,7 +94,7 @@
 
         {{-- PAGINACIÓN --}}
         <div class="card-footer">
-            {{ $programas->links() }}
+            {{ $programas->links('pagination::bootstrap-5') }}
         </div>
     </div>
 

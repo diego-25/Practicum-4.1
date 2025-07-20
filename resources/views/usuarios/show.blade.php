@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detalle de institución')
+@section('title', 'Detalle de usuario')
 
 @section('content')
 <div class="container py-4">
@@ -9,25 +9,23 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('instituciones.index') }}">Instituciones</a>
+                <a href="{{ route('usuarios.index') }}">Usuarios</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                {{ $institucion->siglas ?? $institucion->nombre }}
+                {{ $usuario->name }}
             </li>
         </ol>
     </nav>
 
     {{-- Encabezado --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h4 mb-0">{{ $institucion->nombre }}</h1>
+        <h1 class="h4 mb-0">{{ $usuario->name }}</h1>
 
-        <div class="btn-group-vertical" role="group" aria-label="Acciones">
-            <a href="{{ route('instituciones.edit', $institucion) }}"
-               class="btn btn-sm btn-primary">
+        <div>
+            <a href="{{ route('usuarios.edit', $usuario) }}" class="btn btn-sm btn-primary">
                 Editar
             </a>
-            <a href="{{ route('instituciones.index') }}"
-               class="btn btn-sm btn-outline-secondary">
+            <a href="{{ route('usuarios.index') }}" class="btn btn-sm btn-outline-secondary">
                 Volver
             </a>
         </div>
@@ -38,46 +36,45 @@
         <div class="card-body">
             <div class="row gy-3">
                 <div class="col-md-4">
-                    <h6 class="text-muted mb-1">Siglas</h6>
-                    <span class="fw-semibold">{{ $institucion->siglas }}</span>
+                    <h6 class="text-muted mb-1">Nombre</h6>
+                    <span class="fw-semibold">{{ $usuario->name }}</span>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="text-muted mb-1">RUC</h6>
-                    <span class="fw-semibold">{{ $institucion->ruc }}</span>
+                    <h6 class="text-muted mb-1">Correo</h6>
+                    <span class="fw-semibold">{{ $usuario->email }}</span>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-muted mb-1">Roles</h6>
+                    <span class="fw-semibold">{{ $roles ?: '—' }}</span>
                 </div>
                 <div class="col-md-4">
                     <h6 class="text-muted mb-1">Estado</h6>
                     <span class="fw-semibold">
-                        {{ $institucion->estado ? 'Activa' : 'Inactiva' }}
+                        {{ $usuario->estado ? 'Activo' : 'Inactivo' }}
                     </span>
                 </div>
-
                 <div class="col-md-4">
-                    <h6 class="text-muted mb-1">Email</h6>
-                    <span class="fw-semibold">{{ $institucion->email }}</span>
+                    <h6 class="text-muted mb-1">Creado</h6>
+                    <span class="fw-semibold">{{ $usuario->created_at->format('d/m/Y') }}</span>
                 </div>
                 <div class="col-md-4">
-                    <h6 class="text-muted mb-1">Teléfono</h6>
-                    <span class="fw-semibold">{{ $institucion->telefono }}</span>
-                </div>
-                <div class="col-12">
-                    <h6 class="text-muted mb-1">Dirección</h6>
-                    <p class="mb-0">{{ $institucion->direccion }}</p>
+                    <h6 class="text-muted mb-1">Última actualización</h6>
+                    <span class="fw-semibold">{{ $usuario->updated_at->format('d/m/Y') }}</span>
                 </div>
             </div>
         </div>
     </div>
 
     {{-- Tabs --}}
-    <ul class="nav nav-tabs" id="instTabs" role="tablist">
-        <li class="nav-item" role="presentation">
+    <ul class="nav nav-tabs" id="userTabs" role="tablist">
+        <li class="nav-item">
             <button class="nav-link active" id="info-tab"
                     data-bs-toggle="tab" data-bs-target="#info"
                     type="button" role="tab">
                 Información
             </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item">
             <button class="nav-link" id="audit-tab"
                     data-bs-toggle="tab" data-bs-target="#audit"
                     type="button" role="tab">
@@ -86,14 +83,15 @@
         </li>
     </ul>
 
-    <div class="tab-content border border-top-0 p-3" id="instTabsContent">
+    <div class="tab-content border border-top-0 p-3">
+        {{-- Información adicional (vacío por ahora) --}}
         <div class="tab-pane fade show active" id="info" role="tabpanel">
             <p class="text-muted">Sin información adicional.</p>
         </div>
 
-        {{-- Auditoría --}}
+        {{-- Auditoria --}}
         <div class="tab-pane fade" id="audit" role="tabpanel">
-            @if ($institucion->audits->isEmpty())
+            @if ($usuario->audits->isEmpty())
                 <p class="text-muted mb-0">Sin registros de auditoría.</p>
             @else
                 <div class="table-responsive">
@@ -107,7 +105,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($institucion->audits as $audit)
+                        @foreach ($usuario->audits as $audit)
                             <tr>
                                 <td>{{ ucfirst($audit->event) }}</td>
                                 <td>{{ $audit->user->name ?? '—' }}</td>
@@ -132,6 +130,5 @@ New: {{ json_encode($audit->new_values, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE
             @endif
         </div>
     </div>
-
 </div>
 @endsection

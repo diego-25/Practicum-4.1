@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Proyecto extends Model
+class Proyecto extends Model implements Auditable
 {
     use HasFactory;
-
+    use AuditableTrait;
     protected $table = 'proyectos';
-    protected $primaryKey  = 'idProyecto';
-    public    $incrementing = true;
-    protected $keyType      = 'int';
+    protected $primaryKey = 'idProyecto';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     /** Asignación masiva */
     protected $fillable = [

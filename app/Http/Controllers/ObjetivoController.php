@@ -52,9 +52,11 @@ class ObjetivoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Objetivo $objetivo)
+    public function show($id)
     {
-        //
+        $objetivo = Objetivo::with(['programas'=> fn ($q) => $q->withCount('planes'),'audits.user',])->findOrFail($id);
+
+        return view('objetivos.show', compact('objetivo'));
     }
 
     /**

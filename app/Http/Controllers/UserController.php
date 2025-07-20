@@ -67,9 +67,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $usuario = User::with('audits.user')->findOrFail($id);
+        $roles = $usuario->getRoleNames()->implode(', ');
+        return view('usuarios.show', compact('usuario','roles'));
     }
 
     /**

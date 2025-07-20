@@ -56,9 +56,11 @@ class PlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Plan $plan)
+    public function show($id)
     {
-        //
+        $plan = Plan::with(['programa.objetivo','proyectos','audits.user',])->findOrFail($id);
+
+        return view('planes.show', compact('plan'));
     }
 
     /**

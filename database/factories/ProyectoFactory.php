@@ -25,8 +25,8 @@ class ProyectoFactory extends Factory
             'nombre'=>$this->faker->sentence(4),
             'descripcion'=>$this->faker->paragraph(2),
             'monto_presupuesto'=>$this->faker->randomFloat(2, 10000, 5000000),
-            'fecha_inicio'=>$inicio->format('Y-m-d'),
-            'fecha_fin'=>$fin->format('Y-m-d'),
+            'fecha_inicio'=>$inicio->format('d-m-Y'),
+            'fecha_fin'=>$fin->format('d-m-Y'),
             'estado'=>$this->faker->boolean(90),
         ];
     }

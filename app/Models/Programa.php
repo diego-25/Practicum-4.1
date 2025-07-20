@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Programa extends Model
+class Programa extends Model implements Auditable
 {
     use HasFactory;
+    use AuditableTrait;
     protected $table = 'programas';
     protected $primaryKey = 'idPrograma';
     public $incrementing = true;
@@ -53,7 +56,7 @@ class Programa extends Model
     public function proyectos()
     {
         return $this->hasManyThrough(
-            ProyectoInstitucional::class,
+            Proyecto::class,
             Plan::class,
             'idPrograma',
             'idPlan',

@@ -14,7 +14,7 @@ class InstitucionController extends Controller
      */
     public function index()
     {
-        $instituciones=Institucion::all();
+        $instituciones = Institucion::orderBy('idInstitucion')->paginate(15);
         return view('instituciones.index', compact('instituciones'));
     }
 
@@ -51,9 +51,10 @@ class InstitucionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Institucion $institucion)
+    public function show($id)
     {
-        //
+        $institucion = Institucion::with('audits.user')->findOrFail($id);
+        return view('instituciones.show', compact('institucion'));
     }
 
     /**

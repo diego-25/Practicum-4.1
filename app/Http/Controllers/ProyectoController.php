@@ -64,9 +64,14 @@ class ProyectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proyecto $Proyecto)
+    public function show($id)
     {
-        //
+        $proyecto = Proyecto::with([
+            'plan.programa.objetivo',
+            'audits.user',          // auditoría
+        ])->findOrFail($id);
+        
+        return view('proyectos.show', compact('proyecto'));
     }
 
     /**

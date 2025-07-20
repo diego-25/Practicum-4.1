@@ -52,9 +52,11 @@ class ProgramaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Programa $programa)
+    public function show($id)
     {
-        //
+        $programa = Programa::with(['objetivo','planes' => fn ($q) => $q->withCount('proyectos'), 'audits.user',])->findOrFail($id);
+
+        return view('programas.show', compact('programa'));
     }
 
     /**

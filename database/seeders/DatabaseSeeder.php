@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         //SIPeIP
         $sipeip = Institucion::firstOrCreate([
-            'codigo'=>'PR-000001',
+            'codigo'=>'INS-000001',
             'nombre'=>'Sistema Integrado de Planificación e Inversión Pública',
             'siglas'=>'SIPeIP',
             'ruc'=>'9999999999',

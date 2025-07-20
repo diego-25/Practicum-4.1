@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class Plan extends Model
+class Plan extends Model implements Auditable
 {
     use HasFactory;
+    use AuditableTrait;
     protected $table = 'planes';
     protected $primaryKey  = 'idPlan';
     public    $incrementing = true;
@@ -45,11 +48,11 @@ class Plan extends Model
     }
 
 
-    //Un plan posee uno o varios proyectos institucionales
+    //Un plan posee uno o varios proyectos
     public function proyectos()
     {
         return $this->hasMany(
-            ProyectoInstitucional::class,
+            Proyecto::class,
             'idPlan',      // FK en proyectos
             'idPlan'       // PK local
         );
